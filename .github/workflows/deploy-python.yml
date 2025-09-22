@@ -1,0 +1,24 @@
+# name: Deploy ai-whatif backend to ECS
+
+# on:
+#   push:
+#     branches: [master]
+#     paths:
+#       - '/**'
+#       - '.github/workflows/deploy-python.yml'
+
+# jobs:
+#   deploy:
+#     uses: curatimeXai/github-action/.github/workflows/push-backend-to-ecr.yml@master
+#     permissions:
+#       id-token: write
+#       contents: read
+#     with:
+#       ecr_repository: 
+#       cluster_name: 
+#       service_name: 
+#       task_definition_name: 
+#       build_path: 
+      
+#       # Optional: Add commit SHA as image tag for traceability
+#       sha_tag: ${{ github.sha }}
