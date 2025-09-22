@@ -1,10 +1,10 @@
-# name: Deploy ai-whatif backend to ECS
+# name: Deploy healthmap-heart-sayings backend to ECS
 
 # on:
 #   push:
 #     branches: [master]
 #     paths:
-#       - '/**'
+#       - '**'
 #       - '.github/workflows/deploy-python.yml'
 
 # jobs:
@@ -14,11 +14,11 @@
 #       id-token: write
 #       contents: read
 #     with:
-#       ecr_repository: 
-#       cluster_name: 
-#       service_name: 
-#       task_definition_name: 
-#       build_path: 
+#       ecr_repository: nightingale/healthmap-heart-sayings
+#       cluster_name: nightingale-cluster
+#       service_name: nightingale-heart-sayings-API
+#       task_definition_name: nightingale-heart-sayings-task
+#       build_path: .
       
-#       # Optional: Add commit SHA as image tag for traceability
+#       # Optional: add commit SHA as image tag for traceability
 #       sha_tag: ${{ github.sha }}
