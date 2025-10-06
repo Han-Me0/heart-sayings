@@ -47,6 +47,6 @@ jobs:
         run: |
           aws ecs update-service \
             --cluster healthmap-cluster \
-            --service healthmap-heart-sayings \
+            --service healthmap-heart-sayings-task-service-fsruwwms \
             --force-new-deployment \
             --region eu-central-1
