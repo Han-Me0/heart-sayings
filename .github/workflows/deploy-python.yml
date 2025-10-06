@@ -1,49 +1,50 @@
-# TEST
-
-name: Deploy Healthmap Heart Sayings Backend to ECS
+name: Deploy healthmap-heart-sayings backend to ECS
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
     paths:
       - '**'
-      - '.github/workflows/deploy-python.yml'
+      - '.github/workflows/deploy-heart-sayings.yml'
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
-    name: Build, Push & Deploy
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Configure AWS credentials using OIDC
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::654654611936:role/github-deploy-role
+          role-to-assume: arn:aws:iam::654654611936:role/GitHubActionsECRAccessRole
           aws-region: eu-central-1
 
-      - name: Log in to Amazon ECR
+      # Log in to Amazon ECR
+      - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, and push Docker image to ECR
-        env:
-          ECR_REGISTRY: 654654611936.dkr.ecr.eu-central-1.amazonaws.com
-          ECR_REPOSITORY: healthmap/heart-sayings
-          IMAGE_TAG: latest
+      # Build and push the Docker image
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          IMAGE_URI=654654611936.dkr.ecr.eu-central-1.amazonaws.com/healthmap/heart-sayings:latest
+          docker build -t $IMAGE_URI .
+          docker push $IMAGE_URI
+          echo "image=$IMAGE_URI" >> $GITHUB_OUTPUT
 
-      - name: Update ECS service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          cluster: healthmap-cluster
-          service: healthmap-heart-sayings
-          task-definition: healthmap-heart-sayings-task
-          wait-for-service-stability: true
+      # Force ECS to redeploy using the new image
+      - name: Force ECS new deployment
+        run: |
+          aws ecs update-service \
+            --cluster healthmap-cluster \
+            --service healthmap-heart-sayings \
+            --force-new-deployment \
+            --region eu-central-1
