@@ -1,47 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="../static/img/favicon.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart sayings</title>
-    <link rel="stylesheet" href="../static/style.css">
-    <script src="../static/script.js"></script>
-</head>
-<body>
-    <div class="v-toolbar__content" style="height: 70px;">
-        <img id="logo" src="../static/img/logo.png" alt="logo JGU">
-        <h2 class="title">Heart sayings</h2>
-        <div class="v-spacer"></div>
-        <nav class="navigation">
-            <a href="/heart-sayings">Home</a>
-            <a href="/heart-sayings/project">Project</a>
-            <a href="/heart-sayings/help">Help</a>
-        </nav>
-    </div>
-    <div>
-        <hr id="red-line">
-    </div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="../static/img/favicon.svg">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Heart sayings</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body>
+        <div class="v-toolbar__content" style="height: 70px;">
+            <img id="logo" src="../static/img/logo.png" alt="logo JGU">
+            <h2 class="title">Heart sayings</h2>
+            <div class="v-spacer"></div>
+            <nav class="navigation">
+                <a href="/heart-sayings">Home</a>
+                <a href="/heart-sayings/project">Project</a>
+                <a href="/heart-sayings/help">Help</a>
+            </nav>
+        </div>
+        <div>
+            <hr id="red-line">
+        </div>
 
-    <h1>Find idioms and expressions in different languages with the word HEART</h1>
-    <div class="controls">
-        <select id="languageSelector" onchange="filterByLanguage()" class="red-select">
-            <option value="none">Select Language</option>
-            <option value="English">English</option>
-            <option value="Swedish">Swedish</option>
-            <option value="German">German</option>
-            <option value="Ukrainian">Ukrainian</option>
-        </select>
-        <input type="text" id="searchBar" oninput="searchIdioms()" placeholder="Search by word, group of words or phrase ... ">
-    </div><br>
+        <h1>Find idioms and expressions in different languages with the word HEART</h1>
+        <div class="controls">
+            <select id="languageSelector" onchange="filterByLanguage()" class="red-select">
+                <option value="none">Select Language</option>
+                <option value="English">English</option>
+                <option value="Swedish">Swedish</option>
+                <option value="German">German</option>
+                <option value="Ukrainian">Ukrainian</option>
+            </select>
+            <input type="text" id="searchBar" oninput="searchIdioms()" placeholder="Search by word, group of words or phrase ... ">
+        </div><br>
+        <table>
+            <thead id="idiomsTableHead">
+            <!-- Table head will be dynamically populated here -->
+            </thead>
+            <tbody id="idiomsTable">
+                <!-- Idioms will be dynamically populated here -->
+            </tbody>
+        </table>
+
+        <div id="conceptResults" style="margin-top: 2rem; display: none;">
+    <h2 id="conceptTitle">Idioms with the same meaning in different languages</h2>
+    <p id="conceptDescription"></p>
     <table>
-        <thead id="idiomsTableHead">
-           <!-- Table head will be dynamically populated here -->
+        <thead>
+            <tr>
+                <th>Language</th>
+                <th>Idiom / Expression</th>
+                <th>Meaning</th>
+                <th>Translation of idiom / expression</th>
+                <th>Translation of meaning</th>
+            </tr>
         </thead>
-        <tbody id="idiomsTable">
-            <!-- Idioms will be dynamically populated here -->
+        <tbody id="conceptResultsBody">
+            <!-- filled by JS -->
         </tbody>
     </table>
-    <script>const idioms = {{result|tojson}}</script>
-</body>
-</html>
+</div>
+        <script>
+    const idioms = {{ result|tojson }};
+    console.log("First idiom:", idioms[0]);
+</script>
+<script src="../static/script.js"></script>
+    </body>
+    </html>

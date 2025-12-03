@@ -1,11 +1,9 @@
 from flask import Flask
 from dotenv import load_dotenv, dotenv_values
-from flask import Flask
 from .repository import repo
 from .routes import bp
 import os
 
-# Loading environment variables
 load_dotenv()
 
 def create_app():
@@ -13,26 +11,35 @@ def create_app():
     app = Flask(__name__)
     app.config.from_mapping(config)
 
-    # Prioritize env vars over config if set
-    app.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST")
-    if os.getenv("MYSQL_PORT") != None:
-        app.config["MYSQL_PORT"] = int(os.getenv("MYSQL_PORT"))
-    app.config["MYSQL_USER"] = os.getenv("MYSQL_USER")
-    app.config["MYSQL_PASSWORD"] = os.getenv("MYSQL_PASSWORD")
-    app.config["MYSQL_DB"] = os.getenv("MYSQL_DB")
+    host = os.getenv("MYSQL_HOST")
+    if host:
+        app.config["MYSQL_HOST"] = host
+
+    port = os.getenv("MYSQL_PORT")
+    if port:
+        app.config["MYSQL_PORT"] = int(port)
+
+    user = os.getenv("MYSQL_USER")
+    if user:
+        app.config["MYSQL_USER"] = user
+
+    password = os.getenv("MYSQL_PASSWORD")
+    if password is not None:
+        app.config["MYSQL_PASSWORD"] = password
+
+    db = os.getenv("MYSQL_DB")
+    if db:
+        app.config["MYSQL_DB"] = db
+
     app.config["MYSQL_DATABASE_CHARSET"] = "utf8mb4"
     app.config["MYSQL_CHARSET"] = "utf8mb4"
-    app.config["FLASK_APP"]="ideoms"
-    app.config["FLASK_ENV"]="development"
-    app.config["FLASK_DEBUG"]="True"
 
     print(app.config)
 
-
-    # MySQL initialization from app
+    # init MySQL extension
     repo.init_app(app)
 
-    # Routing
-    app.register_blueprint(routes.bp)
+    # register routes
+    app.register_blueprint(bp)
 
     return app

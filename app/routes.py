@@ -41,6 +41,7 @@ def health():
 @bp.route('/heart-sayings', methods=['GET'])
 def index():
     data = get_all_ideoms()
+    print("FIRST ROW FROM DB:", data[0])
     return render_template("index.html", result=data)
 
 

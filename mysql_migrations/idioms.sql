@@ -6,7 +6,7 @@ CREATE TABLE idioms (
   language VARCHAR(255),
   idiom VARCHAR(255),
   meaning VARCHAR(255),
-  idiom_translation VARCHAR(255),
+  idiom_translation VARCHAR(255), 
   meaning_translation VARCHAR(255)
 ) DEFAULT CHARSET=utf8;
 
