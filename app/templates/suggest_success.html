@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idiom submitted</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <!-- Same top bar as other pages -->
+    <div class="v-toolbar__content" style="height: 70px;">
+        <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
+        <h2 class="title">Heart sayings</h2>
+        <div class="v-spacer"></div>
+        <nav class="navigation">
+            <a href="/heart-sayings">Home</a>
+            <a href="/heart-sayings/project">Project</a>
+            <a href="/heart-sayings/help">Help</a>
+        </nav>
+    </div>
+    <div>
+        <hr id="red-line">
+    </div>
+
+    <div class="page">
+        <div class="success-box">
+            <h1>Thank you for your contribution ❤️</h1>
+            <p>
+                Your idiom suggestion has been submitted and will be reviewed
+                before it is added to the collection.
+            </p>
+
+            <div class="success-actions">
+                <a href="/heart-sayings" class="primary-btn-link">
+                    ← Back to overview
+                </a>
+                <a href="/heart-sayings/suggest" class="secondary-btn-link">
+                    Suggest another idiom
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
