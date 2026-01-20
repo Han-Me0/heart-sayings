@@ -5,6 +5,7 @@
         <link rel="icon" href="../static/img/favicon.svg">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Heart sayings</title>
+        
         <link rel="stylesheet" href="../static/style.css">
     </head>
     <body>
@@ -16,24 +17,42 @@
                 <a href="/heart-sayings">Home</a>
                 <a href="/heart-sayings/project">Project</a>
                 <a href="/heart-sayings/help">Help</a>
+                
+                {% if admin_logged_in %}
+        <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+    {% else %}
+        <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+    {% endif %}
             </nav>
         </div>
+
         <div>
             <hr id="red-line">
-        </div>
-
+            </div>
+        <div class ="page">
+<p style="color:red; font-weight:bold;">
+    admin_logged_in = {{ admin_logged_in|default('UNDEFINED') }}
+</p>
         <h1>Find idioms and expressions in different languages with the word HEART</h1>
         <div class="controls">
             <select id="languageSelector" onchange="filterByLanguage()" class="red-select">
                 <option value="none">Select Language</option>
-                <option value="English">English</option>
-                <option value="Swedish">Swedish</option>
-                <option value="German">German</option>
-                <option value="Ukrainian">Ukrainian</option>
+                {% for lang in languages%}
+                <option value={{ lang }}>{{ lang }}</option>
+                {% endfor %}
             </select>
             <input type="text" id="searchBar" oninput="searchIdioms()" placeholder="Search by word, group of words or phrase ... ">
         </div><br>
-        <table>
+
+        <div id="idiomsSection">
+<p id="clickHint" class="hint" style="display:none;">
+    💡 Click an idiom to see related expressions across languages.
+</p>
+
+<div id="idiomsGrid" class="idiom-grid"></div>
+
+<!-- keep these hidden for JS compatibility, or remove once we update JS fully -->
+        <table display='none'>
             <thead id="idiomsTableHead">
             <!-- Table head will be dynamically populated here -->
             </thead>
@@ -41,10 +60,12 @@
                 <!-- Idioms will be dynamically populated here -->
             </tbody>
         </table>
-
+</div>
+        
         <div id="conceptResults" style="margin-top: 2rem; display: none;">
     <h2 id="conceptTitle">Idioms with the same meaning in different languages</h2>
     <p id="conceptDescription"></p>
+    
     <table>
         <thead>
             <tr>
@@ -59,11 +80,28 @@
             <!-- filled by JS -->
         </tbody>
     </table>
+    <button id="backToListBtn" class="secondary-btn" type="button" style="display:none;">
+        ← Back to idioms
+    </button>
+
 </div>
+
+<div id="suggestionBox" class="suggestion-box">
+    <h3>💬 Write a new idiom...</h3>
+    <p>If you know an idiom with the word <b>heart</b> that is missing here, you can contribute it:</p>
+    
+    <a href="/heart-sayings/suggest" class="suggest-btn-large">
+        ➕ Suggest a new idiom
+    </a>
+</div>
+<div class="admin-login-link">
+    <a href="/heart-sayings/admin/login">Admin login</a>
+</div>
+
         <script>
     const idioms = {{ result|tojson }};
     console.log("First idiom:", idioms[0]);
 </script>
 <script src="../static/script.js"></script>
+</div>
     </body>
-    </html>
