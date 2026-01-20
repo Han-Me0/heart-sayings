@@ -82,3 +82,8 @@ WHERE idiom IN (
   'Jemandem fällt ein Stein vom Herzen',
   'Скрипіти серцем'
 );
+
+UPDATE concepts SET description = '💗 Kind-hearted' WHERE id = 1;
+UPDATE concepts SET description = '🔥 Emotion / strong feelings' WHERE id = 2;
+UPDATE concepts SET description = '🎯 Honesty / openness' WHERE id = 3;
+UPDATE concepts SET description = '⚠️ Fear/ nervousness' WHERE id = 4;
