@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login – Heart sayings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+>
+</head>
+<body>
+    <div class="v-toolbar__content" style="height: 70px;">
+        <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
+        <h2 class="title">Heart sayings</h2>
+        <div class="v-spacer"></div>
+        <nav class="navigation">
+            <a href="/heart-sayings">Home</a>
+            <a href="/heart-sayings/project">Project</a>
+            <a href="/heart-sayings/help">Help</a>
+        </nav>
+    </div>
+    <div>
+        <hr id="red-line">
+    </div>
+
+    <div class="page">
+        <div class="suggest-form">
+            <h1>Admin Login</h1>
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" class="admin-form">
+                <div class="form-row">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" required>
+                </div>
+
+                <button type="submit" class="primary-btn">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

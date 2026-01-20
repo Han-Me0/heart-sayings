@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../static/img/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggest a New Idiom</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="v-toolbar__content" style="height: 70px;">
+        <img id="logo" src="../static/img/logo.png" alt="logo JGU">
+        <h2 class="title">Heart sayings</h2>
+        <div class="v-spacer"></div>
+        <nav class="navigation">
+            <a href="/heart-sayings">Home</a>
+            <a href="/heart-sayings/project">Project</a>
+            <a href="/heart-sayings/help">Help</a>
+        </nav>
+    </div>
+    <div>
+        <hr id="red-line">
+    </div>
+    <div class="page">
+        <h1>Suggest a New Idiom</h1>
+
+        <p class="hint">
+            Language, idiom, and meaning are required.
+        </p>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="suggest-form">
+
+            <div class="form-row">
+                <label for="language">Language</label>
+                <input id="language" name="language" type="text" required>
+            </div>
+
+            <div class="form-row">
+                <label for="idiom">Idiom / Expression</label>
+                <input id="idiom" name="idiom" type="text" required>
+            </div>
+
+            <div class="form-row">
+                <label for="meaning">Meaning</label>
+                <input id="meaning" name="meaning" type="text" required>
+            </div>
+
+            <div class="form-row">
+                <label for="idiom_translation">Idiom Translation (optional)</label>
+                <input id="idiom_translation" name="idiom_translation" type="text">
+            </div>
+
+            <div class="form-row">
+                <label for="meaning_translation">Meaning Translation (optional)</label>
+                <input id="meaning_translation" name="meaning_translation" type="text">
+            </div>
+
+            <button type="submit" class="primary-btn">Submit</button>
+        </form>
+
+        <p style="margin-top:16px;">
+            <a href="/heart-sayings">&larr; Back to overview</a>
+        </p>
+    </div>
+</body>
+</html>

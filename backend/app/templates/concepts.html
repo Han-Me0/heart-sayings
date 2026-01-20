@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concepts – Heart sayings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="v-toolbar__content" style="height: 70px;">
+        <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
+        <h2 class="title">Heart sayings</h2>
+        <div class="v-spacer"></div>
+        <nav class="navigation">
+            <a href="/heart-sayings">Home</a>
+            <a href="/heart-sayings/concepts">Concepts</a>
+            <a href="/heart-sayings/project">Project</a>
+            <a href="/heart-sayings/help">Help</a>
+
+            {% if admin_logged_in %}
+  <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+{% else %}
+  <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+{% endif %}
+
+        </nav>
+    </div>
+    <div><hr id="red-line"></div>
+
+    <div class="page">
+        <h1>Concept overview</h1>
+        <p class="hint">Select a concept to see idioms across languages. Use filters to narrow results.</p>
+
+        <div class="concept-layout">
+
+    <!-- LEFT SIDE: filters + concepts -->
+    <div class="concept-sidebar">
+
+        <div class="controls">
+            <select id="languageFilter" class="red-select">
+                <option value="all">All languages</option>
+            </select>
+
+            <input
+                id="conceptSearch"
+                type="text"
+                placeholder="Search within selected concept…"
+            >
+        </div>
+
+        <div class="concept-list">
+            <h3>Concepts</h3>
+            <ul id="conceptList"></ul>
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE: results -->
+    <div class="concept-results">
+        <h3 id="conceptTitle">Select a concept</h3>
+        <p id="conceptMeta" class="hint"></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Language</th>
+                    <th>Idiom / Expression</th>
+                    <th>Meaning</th>
+                    <th>Idiom translation</th>
+                    <th>Meaning translation</th>
+                </tr>
+            </thead>
+            <tbody id="conceptTableBody"></tbody>
+        </table>
+    </div>
+
+</div>
+
+    <script>
+        const ALL_CONCEPTS = {{ concepts|tojson }};
+        const ALL_IDIOMS = {{ idioms|tojson }};
+    </script>
+        <script defer src="{{ url_for('static', filename='concepts.js') }}"></script>
+</body>
+</html>
