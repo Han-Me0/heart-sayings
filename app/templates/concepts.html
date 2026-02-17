@@ -27,60 +27,44 @@
         </nav>
     </div>
     <div><hr id="red-line"></div>
+<div class="page">
 
-    <div class="page">
-        <h1>Concept overview</h1>
-        <p class="hint">Select a concept to see idioms across languages. Use filters to narrow results.</p>
+  <h1>Concept overview</h1>
+  <p class="hint">Select a concept to see idioms across languages.</p>
 
-        <div class="concept-layout">
+  <!-- OVERVIEW MODE -->
+  <section id="conceptOverview">
+    <div class="concepts-center">
+      <div id="conceptCards" class="concept-cards"></div>
+    </div>
+  </section>
 
-    <!-- LEFT SIDE: filters + concepts -->
-    <div class="concept-sidebar">
+  <!-- RESULTS MODE -->
+  <section id="conceptResultsView" style="display:none;">
+    <div class="controls" style="justify-content:center;">
+      <select id="languageFilter" class="red-select">
+        <option value="all">All languages</option>
+      </select>
 
-        <div class="controls">
-            <select id="languageFilter" class="red-select">
-                <option value="all">All languages</option>
-            </select>
-
-            <input
-                id="conceptSearch"
-                type="text"
-                placeholder="Search within selected concept…"
-            >
-        </div>
-
-        <div class="concept-list">
-            <h3>Concepts</h3>
-            <ul id="conceptList"></ul>
-        </div>
-
+      <input id="conceptSearch" type="text" placeholder="Search within selected concept…">
+      <button id="backToConceptsBtn" class="btn-secondary" type="button">← Back to concepts</button>
     </div>
 
-    <!-- RIGHT SIDE: results -->
-    <div class="concept-results">
-        <h3 id="conceptTitle">Select a concept</h3>
-        <p id="conceptMeta" class="hint"></p>
+    <h2 id="conceptTitle" style="text-align:center; margin-top:18px;"></h2>
+    <p id="conceptMeta" class="hint" style="text-align:center;"></p>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Language</th>
-                    <th>Idiom / Expression</th>
-                    <th>Meaning</th>
-                    <th>Idiom translation</th>
-                    <th>Meaning translation</th>
-                </tr>
-            </thead>
-            <tbody id="conceptTableBody"></tbody>
-        </table>
-    </div>
+    <!-- cards grid like home -->
+    <div id="conceptIdiomsGrid" class="idioms-grid"></div>
+  </section>
 
 </div>
 
-    <script>
-        const ALL_CONCEPTS = {{ concepts|tojson }};
-        const ALL_IDIOMS = {{ idioms|tojson }};
-    </script>
-        <script defer src="{{ url_for('static', filename='concepts.js') }}"></script>
+<script>
+  const ALL_CONCEPTS = {{ concepts|tojson }};
+  const ALL_IDIOMS = {{ idioms|tojson }};
+</script>
+<script defer src="{{ url_for('static', filename='concepts.js') }}"></script>
+
+
 </body>
 </html>

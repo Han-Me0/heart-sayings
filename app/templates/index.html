@@ -5,7 +5,7 @@
         <link rel="icon" href="../static/img/favicon.svg">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Heart sayings</title>
-        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
         <link rel="stylesheet" href="../static/style.css">
     </head>
     <body>
@@ -15,6 +15,7 @@
             <div class="v-spacer"></div>
             <nav class="navigation">
                 <a href="/heart-sayings">Home</a>
+                <a href="/heart-sayings/concepts">Concepts</a>
                 <a href="/heart-sayings/project">Project</a>
                 <a href="/heart-sayings/help">Help</a>
                 
@@ -30,9 +31,6 @@
             <hr id="red-line">
             </div>
         <div class ="page">
-<p style="color:red; font-weight:bold;">
-    admin_logged_in = {{ admin_logged_in|default('UNDEFINED') }}
-</p>
         <h1>Find idioms and expressions in different languages with the word HEART</h1>
         <div class="controls">
             <select id="languageSelector" onchange="filterByLanguage()" class="red-select">
@@ -45,7 +43,7 @@
         </div><br>
 
         <div id="idiomsSection">
-<p id="clickHint" class="hint" style="display:none;">
+<p id="clickHint" class="rolling" style="display:none;">
     💡 Click an idiom to see related expressions across languages.
 </p>
 

@@ -1,142 +1,145 @@
-let selectedCoceptId = null;
+let selectedConceptId = null;
 
-function uniqueLanguages(idioms) {
+function uniqueLanguagesFromConcept(conceptId) {
     const set = new Set();
-    (idioms || []).forEach(i => {
-        if (i && typeof i.language === "string" && i.language.trim()) {
+    (ALL_IDIOMS || []).forEach(i => {
+        if (Number(i.concept_id) === Number(conceptId) && i.language && i.language.trim()) {
             set.add(i.language.trim());
         }
     });
     return Array.from(set).sort();
 }
 
-function renderConceptList(concepts) {
-    const ul = document.getElementById("conceptList");
-    ul.innerHTML = "";
+function renderConceptCards() {
+    const wrap = document.getElementById("conceptCards");
+    if (!wrap) return;
 
-    concepts.forEach(c => {
-        const li = document.createElement("li");
-        li.textContent = `${c.id}. ${c.description}`;
-        li.dataset.conceptId = c.id;
+    wrap.innerHTML = "";
 
-        li.addEventListener("click", () => {
-            selectedConceptId = c.id;
+    (ALL_CONCEPTS || []).forEach(c => {
+        const card = document.createElement("div");
+        card.className = "concept-card";
+        card.dataset.conceptId = c.id;
 
-            // active highlight
-            document.querySelectorAll("#conceptList li").forEach(x => x.classList.remove("active"));
-            li.classList.add("active");
+        // If you stored emoji in description already, keep it as is
+        card.innerHTML = `
+      <div class="concept-title">${c.description}</div>
+      <div class="concept-sub">Click to view idioms across languages</div>
+    `;
 
-            renderConceptResults();
+        card.addEventListener("click", () => {
+            selectedConceptId = Number(c.id);
+            openConceptResults();
         });
 
-        ul.appendChild(li);
+        wrap.appendChild(card);
     });
 }
 
-function fillLanguageDropdown() {
+function openConceptResults() {
+    const overview = document.getElementById("conceptOverview");
+    const results = document.getElementById("conceptResultsView");
+    if (overview) overview.style.display = "none";
+    if (results) results.style.display = "block";
+
+    fillLanguageDropdownForSelected();
+    renderConceptResults();
+}
+
+function backToConcepts() {
+    const overview = document.getElementById("conceptOverview");
+    const results = document.getElementById("conceptResultsView");
+
+    // reset
+    selectedConceptId = null;
+    const searchEl = document.getElementById("conceptSearch");
+    if (searchEl) searchEl.value = "";
+
+    if (results) results.style.display = "none";
+    if (overview) overview.style.display = "block";
+}
+
+function fillLanguageDropdownForSelected() {
     const sel = document.getElementById("languageFilter");
     if (!sel) return;
 
-    // Clear existing (keep the first option if we have languages")
     sel.innerHTML = `<option value="all">All languages</option>`;
 
-    const langs = uniqueLanguages(ALL_IDIOMS);
-
-    console.log("Languages found:", langs); // should print an array
-
+    const langs = uniqueLanguagesFromConcept(selectedConceptId);
     langs.forEach(lang => {
         const opt = document.createElement("option");
         opt.value = lang;
         opt.textContent = lang;
         sel.appendChild(opt);
     });
-
-    sel.addEventListener("change", renderConceptResults);
 }
 
+function renderIdiomCard(i) {
+    const card = document.createElement("div");
+    card.className = "idiom-card"; // reuse your home card CSS
+
+    const concept = i.concept_description && i.concept_description.trim()
+        ? i.concept_description.trim()
+        : "";
+
+    // Keep it consistent with home cards; show only useful lines
+    card.innerHTML = `
+    <div class="idiom-top">
+      <div class="idiom-title">${i.idiom || ""}</div>
+      <div class="badge">${i.language || ""}</div>
+    </div>
+    <div class="idiom-meaning">${i.meaning || ""}</div>
+    <div class="idiom-footer">
+      ${concept ? `<div class="badge">${concept}</div>` : ``}
+      ${(i.idiom_translation && i.idiom_translation !== "n/a") ? `<div class="badge">Idiom: ${i.idiom_translation}</div>` : ``}
+      ${(i.meaning_translation && i.meaning_translation !== "n/a") ? `<div class="badge">Meaning: ${i.meaning_translation}</div>` : ``}
+    </div>
+  `;
+    return card;
+}
 
 function renderConceptResults() {
     const title = document.getElementById("conceptTitle");
     const meta = document.getElementById("conceptMeta");
-    const tbody = document.getElementById("conceptTableBody");
+    const grid = document.getElementById("conceptIdiomsGrid");
 
     const langSel = document.getElementById("languageFilter");
     const searchEl = document.getElementById("conceptSearch");
 
+    if (!grid) return;
+
     const lang = langSel ? langSel.value : "all";
-    const term = (searchEl ? searchEl.value : "").toLowerCase();
+    const term = (searchEl ? searchEl.value : "").toLowerCase().trim();
 
-    if (!selectedConceptId) {
-        title.textContent = "Select a concept (left) to view idioms";
-        meta.textContent = "Choose a concept, then filter by language or search.";
-        tbody.innerHTML = "";
-        return;
-    }
+    const conceptObj = (ALL_CONCEPTS || []).find(c => Number(c.id) === Number(selectedConceptId));
+    if (title) title.textContent = conceptObj ? conceptObj.description : `Concept ${selectedConceptId}`;
+    if (meta) meta.textContent = "Filter by language or search within this concept.";
 
-    const concept = (ALL_CONCEPTS || []).find(
-        c => Number(c.id) === Number(selectedConceptId)
-    );
+    let rows = (ALL_IDIOMS || []).filter(i => Number(i.concept_id) === Number(selectedConceptId));
 
-    title.textContent = concept
-        ? concept.description
-        : `Concept ${selectedConceptId}`;
-
-    let rows = (ALL_IDIOMS || []).filter(
-        i => Number(i.concept_id) === Number(selectedConceptId)
-    );
-
-    if (lang !== "all") {
-        rows = rows.filter(i => i.language === lang);
-    }
+    if (lang !== "all") rows = rows.filter(i => i.language === lang);
 
     if (term) {
         rows = rows.filter(i => {
-            const fields = [
-                i.language,
-                i.idiom,
-                i.meaning,
-                i.idiom_translation,
-                i.meaning_translation
-            ];
-            return fields.some(
-                f => typeof f === "string" && f.toLowerCase().includes(term)
-            );
+            const fields = [i.idiom, i.meaning, i.idiom_translation, i.meaning_translation];
+            return fields.some(f => typeof f === "string" && f.toLowerCase().includes(term));
         });
     }
 
-    tbody.innerHTML = "";
-    rows.forEach(i => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${i.language || ""}</td>
-            <td><b>${i.idiom || ""}</b></td>
-            <td>${i.meaning || ""}</td>
-            <td>${i.idiom_translation || ""}</td>
-            <td>${i.meaning_translation || ""}</td>
-        `;
-        tbody.appendChild(tr);
-    });
+    grid.innerHTML = "";
+    rows.forEach(i => grid.appendChild(renderIdiomCard(i)));
 }
-
 
 function init() {
-    console.log("ALL_IDIOMS length:", ALL_IDIOMS?.length);
-    console.log("Sample idiom:", ALL_IDIOMS?.[0]);
+    renderConceptCards();
 
-    renderConceptList(ALL_CONCEPTS);
-    fillLanguageDropdown();
-
+    const langSel = document.getElementById("languageFilter");
     const searchEl = document.getElementById("conceptSearch");
-    if (searchEl) {
-        searchEl.addEventListener("input", renderConceptResults);
-        // Optional: render initial instructions in the right panel
-        renderConceptResults();
-    }
+    const backBtn = document.getElementById("backToConceptsBtn");
 
+    if (langSel) langSel.addEventListener("change", renderConceptResults);
+    if (searchEl) searchEl.addEventListener("input", renderConceptResults);
+    if (backBtn) backBtn.addEventListener("click", backToConcepts);
 }
 
-if (document.readyState == "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-} else {
-    init();
-}
+document.addEventListener("DOMContentLoaded", init);

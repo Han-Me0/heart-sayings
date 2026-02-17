@@ -247,7 +247,13 @@ function renderCard(idiom) {
 
     card.innerHTML = `
     <div class="idiom-top">
-        <div class="idiom-title">${idiom.idiom || ""}</div>
+        <div class="idiom-title">
+  <span class="idiom-ribbon">
+    <span class="idiom-ribbon__text">${idiom.idiom || ""}</span>
+  </span>
+</div>
+
+
         <div class="lang-badge">${idiom.language || ""}</div>
     </div>
     <div class="idiom-meaning">${idiom.meaning || ""}</div>
