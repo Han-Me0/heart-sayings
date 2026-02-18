@@ -26,10 +26,13 @@ function loadIdioms(languageFilter = "none", searchTerm = "") {
     let filteredIdioms = [];
 
     // Filter by language only
-    if (languageFilter !== "none" && term.length === 0) {
+    if (languageFilter && languageFilter !== "none" && languageFilter !== "all" && term.length === 0) {
         filteredIdioms = idioms.filter(i => i.language === languageFilter);
+    } else if (term.length === 0) {
+        // "all" selected and no search term -> show everything
+        filteredIdioms = idioms;
     } else {
-        // Global search across fields (all languages)
+        // global search across all languages
         filteredIdioms = idioms.filter(i => {
             const fields = [
                 i.language,

@@ -35,6 +35,7 @@
         <div class="controls">
             <select id="languageSelector" onchange="filterByLanguage()" class="red-select">
                 <option value="none">Select Language</option>
+                <option value="all">All languages</option>
                 {% for lang in languages%}
                 <option value={{ lang }}>{{ lang }}</option>
                 {% endfor %}
