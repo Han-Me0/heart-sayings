@@ -138,13 +138,13 @@ function showSameConceptIdioms(conceptId, conceptDescription, clickedIdiom) {
     const container = document.getElementById("conceptResults");
     const title = document.getElementById("conceptTitle");
     const desc = document.getElementById("conceptDescription");
-    const tbody = document.getElementById("conceptResultsBody");
+    const conceptGrid = document.getElementById("conceptGrid");
     const idiomsSection = document.getElementById("idiomsSection");
     const grid = document.getElementById("idiomsGrid");
     const backBtn = document.getElementById("backToListBtn");
 
     // Guard FIRST (avoid JS crash that kills all handlers)
-    if (!container || !title || !desc || !tbody) {
+    if (!container || !title || !desc || !conceptGrid) {
         console.error("Concept results DOM missing (conceptResults/conceptTitle/conceptDescription/conceptResultsBody).");
         return;
     }
@@ -179,25 +179,16 @@ function showSameConceptIdioms(conceptId, conceptDescription, clickedIdiom) {
 
     // Title/description
     title.textContent = "Idioms with the same meaning in different languages";
-    if (conceptDescription && conceptDescription.trim().length > 0) {
-        desc.textContent = `Concept: ${conceptDescription}`;
-    } else {
-        desc.textContent = `Concept ID: ${cid}`;
-    }
+    desc.textContent =
+        conceptDescription && conceptDescription.trim().length > 0
+            ? `Concept: ${conceptDescription}`
+            : `Concept ID: ${cid}`;
 
-    // Render rows
-    tbody.innerHTML = "";
-    finalList.forEach(row => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${row.language || ""}</td>
-            <td><b>${row.idiom || ""}</b></td>
-            <td>${row.meaning || ""}</td>
-            <td>${row.idiom_translation || ""}</td>
-            <td>${row.meaning_translation || ""}</td>
-        `;
-        tbody.appendChild(tr);
-    });
+    // Render cards
+    conceptGrid.innerHTML = "";
+    finalList.forEach(item => {
+        conceptGrid.appendChild(renderConceptCard(item, clickedIdiom));
+    })
 }
 
 
@@ -244,7 +235,7 @@ function renderCard(idiom) {
     const card = document.createElement("div");
     card.className = "idiom-card";
 
-    // store concept info same way you did for rows
+    // store concept info same way done for rows
     card.dataset.conceptId = idiom.concept_id ?? "";
     card.dataset.conceptDescription = idiom.concept_description ?? "";
 
@@ -302,3 +293,46 @@ function renderCard(idiom) {
         bind();
     }
 })();
+
+function renderConceptCard(idiom, clickedIdiom) {
+    const card = document.createElement("div");
+    card.className = "idiom-card";
+
+    card.dataset.conceptId = idiom.concept_id ?? "";
+    card.dataset.conceptDescription = idiom.concept_description ?? "";
+
+    // Optional: visually mark the clicked idiom
+    const isClicked =
+        clickedIdiom &&
+        idiom.idiom === clickedIdiom.idiom &&
+        idiom.language === clickedIdiom.language;
+
+    card.innerHTML = `
+      <div class="idiom-top">
+    <div class="idiom-title">
+      <span class="idiom-ribbon">
+        <span class="idiom-ribbon__text">${idiom.idiom || ""}</span>
+      </span>
+    </div>
+    <div class="lang-badge">${idiom.language || ""}</div>
+  </div>
+
+      <div class="idiom-meaning">${idiom.meaning || ""}</div>
+
+      <div class="idiom-meta">
+        <div><b>Idiom:</b> ${idiom.idiom_translation || ""}</div>
+        <div><b>Meaning:</b> ${idiom.meaning_translation || ""}</div>
+      </div>
+    `;
+
+    if (isClicked) card.classList.add("is-selected");
+
+    // If you want concept cards clickable to “re-focus” (optional)
+    card.addEventListener("click", () => {
+        const conceptId = card.dataset.conceptId ? parseInt(card.dataset.conceptId, 10) : null;
+        if (!conceptId || isNaN(conceptId)) return;
+        showSameConceptIdioms(conceptId, card.dataset.conceptDescription, idiom);
+    });
+
+    return card;
+}
