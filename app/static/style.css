@@ -633,7 +633,7 @@ select {
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
 }
 
-/* leave your layout intact, but give room for the ribbon */
+/* leave layout intact, but give room for the ribbon */
 .idiom-top {
     display: flex;
     justify-content: space-between;
@@ -641,7 +641,7 @@ select {
     align-items: center;
     margin-bottom: 6px;
     position: relative;
-    z-index: 2;
+    z-index: 9;
     padding-top: 8px;
     /* room for strip/ribbon */
 }
@@ -810,4 +810,8 @@ select {
 
 .secondary-btn:hover {
     background: #f3f4f6;
+}
+
+.idiom-card.is-selected {
+    outline: 2px solid rgba(30, 156, 199, .35);
 }
