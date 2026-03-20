@@ -28,30 +28,44 @@ body {
 
 /* Header & Navigation */
 .v-toolbar__content {
-    background-color: var(--white);
-    padding: 10px 5%;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
-    height: auto !important; /* Override fixed height */
-    min-height: 70px;
+    height: auto !important;
+    min-height: 80px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 #logo {
-    max-width: 180px;
+    max-width: 200px;
     height: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    transition: var(--transition);
+}
+
+#logo:hover {
+    transform: scale(1.02);
 }
 
 .title {
-    font-weight: 700;
-    font-size: 1.5rem;
+    font-weight: 800;
+    font-size: 1.8rem;
     color: var(--primary-color);
-    margin: 0 20px;
+    margin: 0 30px;
     flex-shrink: 0;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .navigation {
@@ -133,27 +147,29 @@ table {
     border-collapse: separate;
     border-spacing: 0;
     background-color: var(--white);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
 }
 
 th {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--white);
-    padding: 18px;
+    padding: 20px;
     text-align: left;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
 }
 
 td {
-    padding: 16px 18px;
-    border-bottom: 1px solid var(--border-color);
+    padding: 20px;
+    border-bottom: 1px solid #f1f2f6;
     font-size: 0.95rem;
     vertical-align: top;
+    transition: var(--transition);
 }
 
 tr:last-child td {
@@ -161,7 +177,8 @@ tr:last-child td {
 }
 
 tr:hover td {
-    background-color: #f9f9f9;
+    background-color: #fafbfc;
+    color: var(--primary-color);
 }
 
 td b {
