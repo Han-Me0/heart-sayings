@@ -27,12 +27,12 @@ FROM python:3.11.9-alpine
 WORKDIR /app
 
 # Copy only the dependency list first (for caching)
-COPY requirments.txt .
+COPY requirements.txt .
 
 # Install build dependencies and Python packages
 RUN apk add --no-cache gcc musl-dev mariadb-dev && \
     pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirments.txt
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy the actual app code
 COPY . .

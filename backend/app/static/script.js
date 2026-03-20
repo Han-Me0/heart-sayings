@@ -67,11 +67,11 @@ function createTableHeader(){
 function createRow(idiom) {
     const row = document.createElement("tr");
     row.innerHTML = `
-        <td>${idiom.language}</td>
-        <td><b>${idiom.idiom}</b></td>
-        <td>${idiom.meaning}</td>
-        <td>${idiom.idiom_translation}</td>
-        <td>${idiom.meaning_translation}</td>
+        <td data-label="Language">${idiom.language}</td>
+        <td data-label="Idiom / Expression"><b>${idiom.idiom}</b></td>
+        <td data-label="Meaning">${idiom.meaning}</td>
+        <td data-label="Translation">${idiom.idiom_translation}</td>
+        <td data-label="Meaning Translation">${idiom.meaning_translation}</td>
     `;
     return row;
 }

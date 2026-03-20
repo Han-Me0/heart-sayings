@@ -44,7 +44,7 @@ It is possible to build application as all-in-one artifact or start as python ap
 
 - All-in-one:
 
-  - `pip install -r requirments.txt`
+  - `pip install -r requirements.txt`
   - `pip install pyinstaller`
   -
 
