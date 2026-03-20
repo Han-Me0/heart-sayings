@@ -1,0 +1,7 @@
+# Gitleaks configuration
+[allowlist]
+description = "Allowlist for project-specific safe strings"
+regexes = [
+    'healthmap-heartsayings-alb-1686327227.eu-central-1.elb.amazonaws.com',
+    'heart-sayings-database.chigkwkogx83.eu-central-1.rds.amazonaws.com'
+]

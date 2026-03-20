@@ -14,7 +14,7 @@ clean:
 start-db:
 	docker run --rm -p 3306:3306 --name mysql \
 	-v ".\volume\mysqldb:/var/lib/mysql/" \
-	-v ".\mysql_migrations:/migrations" \
+	-v "..\mysql_migrations:/migrations" \
 	-e "LANG=C.UTF-8" \
 	-e "MYSQL_ROOT_PASSWORD=password" \
 	-d mysql:8.4.3 \

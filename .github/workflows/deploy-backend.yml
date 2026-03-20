@@ -1,0 +1,37 @@
+name: Deploy Backend (Standard)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+
+jobs:
+  security_scan:
+    name: Security Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Run Gitleaks
+        run: |
+          wget https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz
+          tar -xzf gitleaks_8.18.4_linux_x64.tar.gz
+          ./gitleaks detect --source . -v --config .gitleaks.toml
+
+  deploy:
+    needs: security_scan
+    # Reusable workflow for deploying backend to ECR and ECS
+    uses: curatimeXai/github-action/.github/workflows/push-backend-to-ecr.yml@master
+    with:
+      ecr_repository: healthmap/heart-sayings
+      cluster_name: healthmap-cluster
+      service_name: healthmap-heart-sayings-task-service-fsruwwms
+      task_definition_name: healthmap-heart-sayings-task
+      build_path: backend
+    permissions:
+      id-token: write
+      contents: read
