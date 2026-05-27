@@ -23,12 +23,12 @@ INSERT INTO concepts (description) VALUES
 -- Kind hearted
 UPDATE idioms
 SET concept_id = 1
-WHERE idiom IN ('Heart of gold', 'Ein Herz aus Gold', 'All heart', 'Das Herz am rechten Fleck haben', 'Hjärtat på rätt ställe', 'Велике серце')
+WHERE idiom IN ('Heart of gold', 'Ein Herz aus Gold', 'All heart', 'Das Herz am rechten Fleck haben', 'Hjärtat på rätt ställe', 'Велике серце');
 
 -- Honesty / openness
 UPDATE idioms
-SET concept_id = 2
-WHERE idiom In ('Open your heart', 'Bare your heart', 'Handen på hjärtat', 'Hand aufs Herz!', 'Відкрите серце')
+SET concept_id = 3
+WHERE idiom In ('Open your heart', 'Bare your heart', 'Handen på hjärtat', 'Hand aufs Herz!', 'Відкрите серце');
 
 UPDATE idioms
 SET concept_id = 1
@@ -38,7 +38,7 @@ WHERE idiom IN (
   'Hjärtat på rätt ställe',
   'Skänka någon sitt hjärta',
   'Велике серце',
-  'Mати Бога в серці',
+  'Мати Бога в серці',
   'Das Herz am rechten Fleck haben',
   'Ein Herz und eine Seele'
 );
@@ -87,3 +87,83 @@ UPDATE concepts SET description = '💗 Kind-hearted' WHERE id = 1;
 UPDATE concepts SET description = '🔥 Emotion / strong feelings' WHERE id = 2;
 UPDATE concepts SET description = '🎯 Honesty / openness' WHERE id = 3;
 UPDATE concepts SET description = '⚠️ Fear/ nervousness' WHERE id = 4;
+
+CREATE TABLE IF NOT EXISTS concepts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    description VARCHAR(225) NOT NULL
+) DEFAULT CHARSET = utf8mb4;
+
+INSERT INTO concepts (description) VALUES
+('💗 Kind-hearted'),
+('🔥 Emotion / strong feelings'),
+('🎯 Honesty / openness'),
+('⚠️ Fear / nervousness')
+ON DUPLICATE KEY UPDATE description = VALUES(description);
+
+UPDATE idioms
+SET concept_id = 1
+WHERE idiom IN (
+  'Heart of gold',
+  'All heart',
+  'Hjärtat på rätt ställe',
+  'Велике серце',
+  'Мати Бога в серці',
+  'Das Herz am rechten Fleck haben',
+  'Ein Herz und eine Seele'
+);
+
+UPDATE idioms
+SET concept_id = 2
+WHERE idiom IN (
+  'My heart bleeds',
+  'Broken heart',
+  'Warm the cockles of your heart',
+  'From the bottom of your heart',
+  'Bli varm om hjärtat',
+  'Ha ett brustet hjärta',
+  'Herzzerreißend sein oder Jemandem das Herz zerreißen',
+  'Серце крається',
+  'Кам’яне серце',
+  'Тане серце',
+  'Change of heart',
+  'Absence makes the heart grow fonder',
+  'Heart misses a beat'
+);
+
+UPDATE idioms
+SET concept_id = 3
+WHERE idiom IN (
+  'Open your heart',
+  'Bare your heart',
+  'Put your hand on your heart',
+  'Handen på hjärtat',
+  'Hand aufs Herz!',
+  'Komma från hjärtat',
+  'Aus seinem Herzen keine Mördergrube machen',
+  'Das Herz auf der Zunge tragen',
+  'Відкрите серце',
+  'Покласти руку на серце'
+);
+
+UPDATE idioms
+SET concept_id = 4
+WHERE idiom IN (
+  'Heart in your mouth',
+  'Med hjärtat i halsgropen'
+);
+
+-- to remove duplicated concept-cards
+
+DELETE FROM concepts
+WHERE id NOT IN (
+  SELECT * FROM (
+    SELECT MIN(id)
+    FROM concepts
+    GROUP BY description
+  ) AS keep_ids
+);
+
+SELECT id, description FROM concepts ORDER BY id;
+
+-- avoid dupliate
+ALTER TABLE concepts ADD UNIQUE (description);

@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    {% include "includes/gdpr_popup.html" %}
     <div class="v-toolbar__content" style="height: 70px;">
         <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
         <h2 class="title">Heart sayings</h2>
         <div class="v-spacer"></div>
         <nav class="navigation">
             <a href="/heart-sayings">Home</a>
-            <a href="/heart-sayings/concepts">Concepts</a>
             <a href="/heart-sayings/project">Project</a>
             <a href="/heart-sayings/help">Help</a>
 
@@ -40,28 +40,42 @@
   </section>
 
   <!-- RESULTS MODE -->
-  <section id="conceptResultsView" style="display:none;">
-    <div class="controls" style="justify-content:center;">
-      <select id="languageFilter" class="red-select">
-        <option value="all">All languages</option>
-      </select>
+  <div id="conceptResultsView" style="display:none; margin-top:2rem;">
 
-      <input id="conceptSearch" type="text" placeholder="Search within selected concept…">
-      <button id="backToConceptsBtn" class="btn-secondary" type="button">← Back to concepts</button>
+    <h2 id="conceptTitle"></h2>
+    <p id="conceptMeta"></p>
+
+    <div class="controls">
+        <select id="languageFilter" class="red-select">
+            <option value="all">All languages</option>
+        </select>
+
+        <input 
+            type="text" 
+            id="conceptSearch" 
+            placeholder="Search within this concept..."
+        >
     </div>
 
-    <h2 id="conceptTitle" style="text-align:center; margin-top:18px;"></h2>
-    <p id="conceptMeta" class="hint" style="text-align:center;"></p>
+    <!-- Grid for idiom cards -->
+    <div id="conceptIdiomsGrid" class="idiom-grid"></div>
 
-    <!-- cards grid like home -->
-    <div id="conceptIdiomsGrid" class="idioms-grid"></div>
-  </section>
+    <div style="margin-top:20px;">
+        <button 
+            id="backToConceptsBtn" 
+            class="secondary-btn" 
+            type="button"
+        >
+            ← Back to concepts
+        </button>
+    </div>
 
+</div>
 </div>
 
 <script>
-  const ALL_CONCEPTS = {{ concepts|tojson }};
-  const ALL_IDIOMS = {{ idioms|tojson }};
+  window.ALL_CONCEPTS = {{ concepts|tojson }};
+  window.ALL_IDIOMS = {{ idioms|tojson }};
 </script>
 <script defer src="{{ url_for('static', filename='concepts.js') }}"></script>
 

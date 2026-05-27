@@ -5,7 +5,11 @@ from .routes import bp
 import os
 
 def create_app():
-    load_dotenv()  # ensure .env is loaded
+
+    # load_dotenv()  # ensure .env is loaded
+    load_dotenv(dotenv_path=".env")  # force path
+
+    print("DEBUG API KEY:", os.getenv("OPENAI_API_KEY")) # debug api key
 
     app = Flask(__name__)
 

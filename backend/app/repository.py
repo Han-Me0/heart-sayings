@@ -6,26 +6,45 @@ repo = MySQL()
 # Select all idioms from database
 def get_all_ideoms():
     cur = repo.connection.cursor()
-    cur.execute('''
-SELECT
-                i.language,
+    cur.execute("""
+        SELECT DISTINCT
+                TRIM(i.language) AS language,
                 i.idiom,
                 i.meaning,
                 i.idiom_translation,
                 i.meaning_translation,
                 i.concept_id,
-                c.description AS concept_description FROM idioms i LEFT JOIN concepts c ON i.concept_id = c.id
-''')
+                c.description AS concept_description
+        FROM idioms i
+        LEFT JOIN concepts c 
+            ON i.concept_id = c.id
+        WHERE i.language IS NOT NULL
+            AND TRIM(i.language) <> ''
+""")
     rows = cur.fetchall()
     data = to_map(rows)
     return data
 
-
+# edited so there will be no duplicate
 def get_all_concepts():
     cur = repo.connection.cursor()
-    cur.execute("SELECT id, description FROM concepts ORDER BY id")
+    cur.execute("""
+        SELECT id, description
+        FROM concepts
+        ORDER BY id
+    """)
     rows = cur.fetchall()
-    return [{"id": i[0], "description": i[1]} for i in rows]
+
+    seen = set()
+    result = []
+
+    for r in rows:
+        desc = (r[1] or "").strip()
+        if desc not in seen:
+            seen.add(desc)
+            result.append({"id": r[0], "description": desc})
+
+    return result
 
 
 # ----------- suggestion ------------
@@ -58,6 +77,23 @@ def get_languages():
                 """)
     rows = cur.fetchall()
     return [r[0] for r in rows]
+
+def get_concept_id_by_description(description):
+    cur = repo.connection.cursor()
+
+    cur.execute("""
+        SELECT id
+        FROM concepts
+        WHERE LOWER(TRIM(description)) = LOWER(TRIM(%s))
+        LIMIT 1
+    """, (description,))
+
+    row = cur.fetchone()
+
+    if row:
+        return row[0]
+
+    return None
 
 # ----------- helper mapping ----------
 # Convert raw data from a database to a map

@@ -623,7 +623,7 @@ select {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 14px 14px 12px;
+    padding: 14px 17px 12px;
     cursor: pointer;
     transition: transform .12s ease, box-shadow .12s ease;
 }
@@ -661,7 +661,7 @@ select {
     display: inline-block;
 }
 
-/* main ribbon block (flat right edge like screenshot) */
+/* main ribbon block */
 .idiom-ribbon__text {
     display: inline-block;
     background: linear-gradient(180deg, #39b3da 0%, #1e9cc7 100%);
@@ -814,4 +814,240 @@ select {
 
 .idiom-card.is-selected {
     outline: 2px solid rgba(30, 156, 199, .35);
+}
+
+.idioms-carousel {
+    width: 100%;
+}
+
+.idioms-viewport {
+    overflow: hidden;
+    /* prevents page scrolling */
+    width: 100%;
+    padding: 28px 17px 26px 25px;
+}
+
+.idioms-track {
+    display: flex;
+    transition: transform 260ms ease;
+    will-change: transform;
+}
+
+/* each "page" is a grid of cards */
+.idioms-page {
+    flex: 0 0 100%;
+    padding: 8px 0;
+}
+
+.idioms-page-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* responsive: 1 column on small screens */
+@media (max-width: 800px) {
+    .idioms-page-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.idioms-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.idioms-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.25);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.idioms-dot.is-active {
+    background: rgba(30, 156, 199, 0.95);
+    border-color: rgba(30, 156, 199, 0.95);
+}
+
+.empty-state-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.info-message {
+    margin: 15px auto;
+    padding: 12px 18px;
+    max-width: 600px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#ng-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.ng-modal {
+    background: white;
+    padding: 24px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.ng-title {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.ng-body {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.ng-btn {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.ng-btn.active {
+    background: #1D9E75;
+    color: white;
+}
+
+.ng-legal a {
+    font-size: 12px;
+    margin: 0 8px;
+}
+
+/* =========================
+   Suggest page - Figma style
+   ========================= */
+
+body {
+    background: linear-gradient(135deg, #eef3f0 0%, #f8f3ef 100%);
+}
+
+.suggest-form {
+    max-width: 720px;
+    margin: 30px auto;
+    padding: 36px 42px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 28px;
+    box-shadow: 0 20px 45px rgba(44, 62, 80, 0.14);
+    backdrop-filter: blur(10px);
+    text-align: left;
+}
+
+.suggest-form .form-row {
+    margin-bottom: 22px;
+}
+
+.suggest-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2d2d2d;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.suggest-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    border: 1px solid #d8d3cc;
+    border-radius: 14px;
+    background: #fffdfb;
+    color: #1f2937;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.suggest-form input:focus {
+    outline: none;
+    border-color: #8b5e3c;
+    box-shadow: 0 0 0 4px rgba(139, 94, 60, 0.12);
+}
+
+.secondary-btn {
+    margin-top: 10px;
+    padding: 10px 16px;
+    border: 1px solid #8b5e3c;
+    border-radius: 999px;
+    background: #fff;
+    color: #6f4328;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+    background: #8b5e3c;
+    color: white;
+}
+
+.primary-btn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #7f4f2f, #b77b4b);
+    color: white;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(127, 79, 47, 0.28);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(127, 79, 47, 0.35);
+}
+
+#meaning-result,
+#concept-result,
+#translation-result {
+    margin-top: 10px;
+    color: #5f5148;
+    font-size: 0.92rem;
+}
+
+.page h1 {
+    margin-top: 34px;
+    color: #5f2f23;
+    font-size: 2.2rem;
+    font-style: italic;
+}
+
+.page>.hint {
+    color: #6b5f58;
+    font-size: 1rem;
+}
+
+.error {
+    max-width: 720px;
+    margin: 16px auto;
+    border-radius: 14px;
 }

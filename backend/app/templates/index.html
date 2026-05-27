@@ -1,97 +1,106 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="icon" href="../static/img/favicon.svg">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Heart sayings</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="../static/img/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heart sayings</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <link rel="stylesheet" href="../static/style.css">
-    </head>
-    <body>
-        <div class="v-toolbar__content" style="height: 70px;">
-            <img id="logo" src="../static/img/logo.webp" alt="Nightingale Project Logo">
-            <h2 class="title">Heart sayings</h2>
-            <div class="v-spacer"></div>
-            <nav class="navigation">
-                <a href="/heart-sayings">Home</a>
-                <a href="/heart-sayings/concepts">Concepts</a>
-                <a href="/heart-sayings/project">Project</a>
-                <a href="/heart-sayings/help">Help</a>
-                
-                {% if admin_logged_in %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+  {% include "includes/gdpr_popup.html" %}
+  <div class="v-toolbar__content" style="height: 70px;">
+    <img id="logo" src="../static/img/logo.png" alt="logo JGU">
+    <h2 class="title">Heart sayings</h2>
+    <div class="v-spacer"></div>
+
+    <nav class="navigation">
+      <a href="/heart-sayings/concepts">Concepts</a>
+      <a href="/heart-sayings/project">Project</a>
+      <a href="/heart-sayings/help">Help</a>
+
+      {% if admin_logged_in %}
         <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
-    {% else %}
+      {% else %}
         <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
-    {% endif %}
-            </nav>
+      {% endif %}
+    </nav>
+  </div>
+
+  <hr id="red-line">
+
+  <div class="page">
+    <h1>Find idioms and expressions in different languages with the word HEART</h1>
+
+    <div class="controls">
+      <!-- Removed inline onchange handler; JS will bind event listener -->
+      <select id="languageSelector" class="red-select">
+        <option value="none">Select Language</option>
+        <option value="all">All languages</option>
+        {% for lang in languages %}
+          <option value="{{ lang }}">{{ lang }}</option>
+        {% endfor %}
+      </select>
+
+    <!-- Removed inline oninput handler; JS will bind event listener -->
+      <input type="text" id="searchBar" placeholder="Search by word, group of words or phrase ... ">
+    </div>
+
+    <br>
+    <!-- add alert message for clicked idioms that does not have concept_id -->
+       <div id="infoMessage" class="info-message" style="display:none;"></div>
+
+    <div id="idiomsSection">
+      <p id="clickHint" class="rolling" style="display:none;">
+        💡 Click an idiom to see related expressions across languages.
+      </p>
+
+      <div class="idioms-carousel">
+        <div id="idiomsViewport" class="idioms-viewport">
+          <div id="idiomsTrack" class="idioms-track"></div>
         </div>
 
-        <div>
-            <hr id="red-line">
-            </div>
-        <div class ="page">
-        <h1>Find idioms and expressions in different languages with the word HEART</h1>
-        <div class="controls">
-            <select id="languageSelector" onchange="filterByLanguage()" class="red-select">
-                <option value="none">Select Language</option>
-                <option value="all">All languages</option>
-                {% for lang in languages%}
-                <option value={{ lang }}>{{ lang }}</option>
-                {% endfor %}
-            </select>
-            <input type="text" id="searchBar" oninput="searchIdioms()" placeholder="Search by word, group of words or phrase ... ">
-        </div><br>
+        <div id="idiomsDots" class="idioms-dots" aria-label="Idiom pages"></div>
+      </div>
+    </div>
 
-        <div id="idiomsSection">
-<p id="clickHint" class="rolling" style="display:none;">
-    💡 Click an idiom to see related expressions across languages.
-</p>
+    <div id="conceptResults" style="margin-top: 2rem; display: none;">
+      <h2 id="conceptTitle">Idioms with the same meaning in different languages</h2>
+      <p id="conceptDescription"></p>
 
-<div id="idiomsGrid" class="idiom-grid"></div>
+      <div id="conceptGrid" class="idiom-grid"></div>
 
-<!-- keep these hidden for JS compatibility, or remove once we update JS fully -->
-        <table display='none'>
-            <thead id="idiomsTableHead">
-            <!-- Table head will be dynamically populated here -->
-            </thead>
-            <tbody id="idiomsTable">
-                <!-- Idioms will be dynamically populated here -->
-            </tbody>
-        </table>
-</div>
-        
-        <div id="conceptResults" style="margin-top: 2rem; display: none;">
-    <h2 id="conceptTitle">Idioms with the same meaning in different languages</h2>
-    <p id="conceptDescription"></p>
-    
-    <div id="conceptGrid" class="idiom-grid"></div>
-
-    <button id="backToListBtn" class="secondary-btn" type="button" style="display:none;">
+      <button id="backToListBtn" class="secondary-btn" type="button" style="display:none;">
         ← Back to idioms
-    </button>
+      </button>
+    </div>
 
-</div>
+    <div id="suggestionBox" class="suggestion-box">
+      <h3>💬 Write a new idiom...</h3>
+      <p>If you know an idiom with the word <b>heart</b> that is missing here, you can contribute it:</p>
 
-<div id="suggestionBox" class="suggestion-box">
-    <h3>💬 Write a new idiom...</h3>
-    <p>If you know an idiom with the word <b>heart</b> that is missing here, you can contribute it:</p>
-    
-    <a href="/heart-sayings/suggest" class="suggest-btn-large">
+      <a href="/heart-sayings/suggest" class="suggest-btn-large">
         ➕ Suggest a new idiom
-    </a>
-</div>
-<div class="admin-login-link">
-    <a href="/heart-sayings/admin/login">Admin login</a>
-</div>
+      </a>
+    </div>
 
-        <script>
-    const idioms = {{ result|tojson }};
-    console.log("First idiom:", idioms[0]);
-</script>
-<script src="../static/script.js"></script>
-</div>
-    </body>
+    <div class="admin-login-link">
+      <a href="/heart-sayings/admin/login">Admin login</a>
+    </div>
+  </div>
+
+  <!-- Data injection: keep as-is -->
+  <script>
+    window.idioms = {{ result|tojson }};
+    console.log("First idiom:", window.idioms?.[0]);
+  </script>
+
+  <!-- IMPORTANT: concept.js before script.js -->
+  <script src="../static/script.js" defer></script>
+</body>
+</html>

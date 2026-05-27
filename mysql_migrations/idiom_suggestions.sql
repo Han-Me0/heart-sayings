@@ -9,3 +9,17 @@ CREATE TABLE idiom_suggestions (
   status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- clean invalid concept references before adding FK
+UPDATE idiom_suggestions s
+LEFT JOIN concepts c ON s.concept_id = c.id
+SET s.concept_id = NULL
+WHERE s.concept_id IS NOT NULL
+AND c.id IS NULL;
+
+ALTER TABLE idiom_suggestions
+ADD CONSTRAINT fk_idiom_suggestions_concepts
+FOREIGN KEY (concept_id)
+REFERENCES concepts(id)
+ON DELETE SET NULL
+ON UPDATE CASCADE;

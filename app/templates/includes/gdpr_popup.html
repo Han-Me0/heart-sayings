@@ -1,0 +1,410 @@
+<!-- GDPR / Privacy Consent Popup for Heart Sayings -->
+<div id="hs-gdpr-overlay" class="hs-gdpr-overlay">
+  <div class="hs-gdpr-modal" id="hs-gdpr-modal">
+
+    <div id="hs-gdpr-main-view">
+      <div class="hs-gdpr-header">
+        <p class="hs-gdpr-title">Privacy &amp; consent notice</p>
+        <p class="hs-gdpr-sub">
+          Please review how Heart Sayings works before continuing.
+          Governed under EU GDPR (2016/679).
+        </p>
+      </div>
+
+      <div class="hs-gdpr-body">
+
+        <div class="hs-gdpr-box hs-gdpr-success">
+          <p>
+            <strong>Privacy first.</strong>
+            Heart Sayings does not store or share personal data. Search and filter actions are processed temporarily during your session.
+          </p>
+        </div>
+
+        <div class="hs-gdpr-box hs-gdpr-warning">
+          <p>
+            <strong>Educational language tool.</strong>
+            Heart Sayings presents idioms and expressions containing the word “heart” across languages.
+            It is intended for informational and educational purposes only.
+          </p>
+        </div>
+
+        <p class="hs-gdpr-label">Required — always active</p>
+
+        <div class="hs-gdpr-toggle-row">
+          <div>
+            <p class="hs-gdpr-toggle-name">
+              Essential in-session processing <span class="hs-gdpr-required">required</span>
+            </p>
+            <p class="hs-gdpr-toggle-desc">
+              Temporary processing needed for search, filtering, and displaying idiom results.
+              Nothing is retained after the session ends.
+            </p>
+          </div>
+
+          <label class="hs-gdpr-toggle">
+            <input type="checkbox" checked disabled>
+            <span></span>
+          </label>
+        </div>
+
+        <p class="hs-gdpr-label">Optional — your choice</p>
+
+        <div class="hs-gdpr-toggle-row">
+          <div>
+            <p class="hs-gdpr-toggle-name">Anonymous usage analytics</p>
+            <p class="hs-gdpr-toggle-desc">
+              Optional aggregated usage information to help improve the website.
+            </p>
+          </div>
+
+          <label class="hs-gdpr-toggle">
+            <input type="checkbox" id="hs-analytics">
+            <span></span>
+          </label>
+        </div>
+
+        <div class="hs-gdpr-toggle-row">
+          <div>
+            <p class="hs-gdpr-toggle-name">Crash &amp; error reporting</p>
+            <p class="hs-gdpr-toggle-desc">
+              Optional technical error information to help fix bugs.
+            </p>
+          </div>
+
+          <label class="hs-gdpr-toggle">
+            <input type="checkbox" id="hs-errors">
+            <span></span>
+          </label>
+        </div>
+
+        <div class="hs-gdpr-info">
+          <p class="hs-gdpr-info-label">About this tool</p>
+          <p>
+            Heart Sayings allows users to explore idiomatic expressions containing the word “heart”
+            in different languages. Users can filter by language, search expressions, and compare
+            idioms with similar meanings across languages.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="hs-gdpr-footer">
+        <button class="hs-gdpr-primary" id="hs-btn-accept" type="button">
+          Accept selected &amp; continue
+        </button>
+
+        <button class="hs-gdpr-secondary" id="hs-btn-reject" type="button">
+          Essential only &amp; continue
+        </button>
+
+        <div class="hs-gdpr-links">
+          <a href="{{ url_for('static', filename='legal/privacy-policy.pdf') }}" target="_blank">
+            Privacy policy
+          </a>
+          <a href="{{ url_for('static', filename='legal/terms-of-service.pdf') }}" target="_blank">
+            Terms of use
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hs-gdpr-done" id="hs-gdpr-done-view">
+      <div class="hs-gdpr-check">✓</div>
+      <p><strong>Preferences saved</strong></p>
+      <p>You can continue using Heart Sayings.</p>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .hs-gdpr-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 99999;
+  }
+
+  .hs-gdpr-modal {
+    background: #fff;
+    border-radius: 14px;
+    max-width: 540px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.22);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .hs-gdpr-header {
+    padding: 1.4rem 1.6rem 1rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .hs-gdpr-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: #2c2c2a;
+  }
+
+  .hs-gdpr-sub {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .hs-gdpr-body {
+    padding: 1rem 1.6rem;
+    max-height: 420px;
+    overflow-y: auto;
+  }
+
+  .hs-gdpr-box {
+    border-radius: 10px;
+    padding: 10px 13px;
+    margin-bottom: 12px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .hs-gdpr-box p {
+    margin: 0;
+  }
+
+  .hs-gdpr-success {
+    background: #eefaf5;
+    border: 1px solid #bfe8d7;
+    color: #0f6e56;
+  }
+
+  .hs-gdpr-warning {
+    background: #fff7e8;
+    border: 1px solid #f1d39b;
+    color: #7a5200;
+  }
+
+  .hs-gdpr-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #777;
+    font-weight: 700;
+    margin: 16px 0 6px;
+  }
+
+  .hs-gdpr-toggle-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .hs-gdpr-toggle-name {
+    font-size: 0.86rem;
+    font-weight: 700;
+    margin: 0 0 3px;
+    color: #333;
+  }
+
+  .hs-gdpr-toggle-desc {
+    font-size: 0.76rem;
+    color: #666;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .hs-gdpr-required {
+    font-size: 0.65rem;
+    background: #eee;
+    color: #777;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin-left: 4px;
+  }
+
+  .hs-gdpr-toggle {
+    position: relative;
+    width: 38px;
+    height: 21px;
+    flex-shrink: 0;
+    cursor: pointer;
+    margin-top: 2px;
+  }
+
+  .hs-gdpr-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .hs-gdpr-toggle span {
+    position: absolute;
+    inset: 0;
+    background: #c9c9c9;
+    border-radius: 999px;
+    transition: 0.2s;
+  }
+
+  .hs-gdpr-toggle span::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 3px;
+    top: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.2s;
+  }
+
+  .hs-gdpr-toggle input:checked + span {
+    background: #1d9e75;
+  }
+
+  .hs-gdpr-toggle input:checked + span::before {
+    transform: translateX(17px);
+  }
+
+  .hs-gdpr-info {
+    background: #f5f7fb;
+    border-left: 3px solid #2f9ec4;
+    border-radius: 8px;
+    padding: 10px 13px;
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .hs-gdpr-info p {
+    margin: 0;
+  }
+
+  .hs-gdpr-info-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: #185fa5;
+    margin-bottom: 4px !important;
+  }
+
+  .hs-gdpr-footer {
+    padding: 1rem 1.6rem 1.2rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hs-gdpr-primary,
+  .hs-gdpr-secondary {
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .hs-gdpr-primary {
+    border: none;
+    background: #1d9e75;
+    color: #fff;
+  }
+
+  .hs-gdpr-secondary {
+    border: 1px solid #ccc;
+    background: transparent;
+    color: #444;
+  }
+
+  .hs-gdpr-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .hs-gdpr-links a {
+    font-size: 0.72rem;
+    color: #777;
+    text-decoration: none;
+  }
+
+  .hs-gdpr-links a:hover {
+    text-decoration: underline;
+  }
+
+  .hs-gdpr-done {
+    display: none;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: #333;
+  }
+
+  .hs-gdpr-check {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #eefaf5;
+    color: #0f6e56;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const overlay = document.getElementById("hs-gdpr-overlay");
+    const mainView = document.getElementById("hs-gdpr-main-view");
+    const doneView = document.getElementById("hs-gdpr-done-view");
+    const acceptBtn = document.getElementById("hs-btn-accept");
+    const rejectBtn = document.getElementById("hs-btn-reject");
+
+    if (!overlay) return;
+
+    if (localStorage.getItem("heart_sayings_privacy_accepted") === "1") {
+      overlay.style.display = "none";
+      return;
+    }
+
+    function closeConsentPopup() {
+      localStorage.setItem("heart_sayings_privacy_accepted", "1");
+
+      if (mainView) mainView.style.display = "none";
+      if (doneView) doneView.style.display = "block";
+
+      setTimeout(function () {
+        overlay.style.display = "none";
+      }, 800);
+    }
+
+    if (acceptBtn) {
+      acceptBtn.addEventListener("click", closeConsentPopup);
+    }
+
+    if (rejectBtn) {
+      rejectBtn.addEventListener("click", function () {
+        const analytics = document.getElementById("hs-analytics");
+        const errors = document.getElementById("hs-errors");
+
+        if (analytics) analytics.checked = false;
+        if (errors) errors.checked = false;
+
+        closeConsentPopup();
+      });
+    }
+  });
+</script>
