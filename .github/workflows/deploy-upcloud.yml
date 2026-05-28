@@ -1,0 +1,94 @@
+name: Deploy Heart Sayings to UpCloud
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-upcloud.yml'
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  APP_NAME: healthmap-heart-sayings
+  GITOPS_REPO: curatimeXai/gitops-infra
+  GITOPS_BRANCH: master
+  MANIFEST_PATH: apps/healthmap-heart-sayings/deployment.yaml
+
+jobs:
+  security-scan:
+    name: Security Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout app repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-and-update-gitops:
+    name: Build image and update GitOps
+    needs: security-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout app repository
+        uses: actions/checkout@v4
+
+      - name: Set image variables
+        id: vars
+        shell: bash
+        run: |
+          OWNER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          IMAGE="ghcr.io/${OWNER}/${APP_NAME}"
+          TAG="${GITHUB_SHA::7}"
+          echo "image=${IMAGE}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "full_image=${IMAGE}:${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.vars.outputs.full_image }}
+            ${{ steps.vars.outputs.image }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Checkout GitOps repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.GITOPS_REPO }}
+          ref: ${{ env.GITOPS_BRANCH }}
+          token: ${{ secrets.GITOPS_TOKEN }}
+          path: gitops-infra
+
+      - name: Update image in GitOps manifest
+        shell: bash
+        run: |
+          cd gitops-infra
+          sed -i "s#image: ghcr.io/.*/${APP_NAME}:.*#image: ${{ steps.vars.outputs.full_image }}#" "${MANIFEST_PATH}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${MANIFEST_PATH}"
+          git commit -m "chore(${APP_NAME}): deploy ${{ steps.vars.outputs.tag }}" || echo "No changes to commit"
+          git push origin "${GITOPS_BRANCH}"
