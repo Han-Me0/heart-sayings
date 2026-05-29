@@ -6,80 +6,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suggest a New Idiom</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div class="v-toolbar__content" style="height: 70px;">
-        <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
-        <h2 class="title">Heart sayings</h2>
-        <div class="v-spacer"></div>
+    <header class="site-header">
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
+        </div>
+
+        <h2 class="navbar-title">Heart sayings</h2>
+
         <nav class="navigation">
             <a href="/heart-sayings">Home</a>
             <a href="/heart-sayings/concepts">Concepts</a>
             <a href="/heart-sayings/project">Project</a>
             <a href="/heart-sayings/help">Help</a>
+
             {% if admin_logged_in %}
-              <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
             {% else %}
-              <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
             {% endif %}
         </nav>
     </div>
 
-    <div>
-        <hr id="red-line">
-    </div>
-
+    <div class="navbar-red-line"></div>
+</header>
     <div class="page suggest-page">
-        <h1>Suggest a New Idiom</h1>
-
-        <p class="hint">
-            Language, idiom, and meaning are required.
-        </p>
 
         {% if error %}
             <div class="error">{{ error }}</div>
         {% endif %}
 
         <form method="post" class="suggest-form">
+          <h1>Suggest a New Idiom</h1>
+
+        <p class="hint">
+            Language, idiom, and meaning are required.
+        </p>
             <div class="form-row">
                 <label for="language">Language</label>
-                <input id="language" name="language" type="text" required>
+                <input id="language" name="language" type="text" placeholder="Language" required>
             </div>
 
             <div class="form-row">
                 <label for="idiom">Idiom / Expression</label>
-                <input id="idiom" name="idiom" type="text" required>
+                <input id="idiom" name="idiom" type="text" placeholder="Idiom / Expression" required>
             </div>
 
             <div class="form-row">
                 <label for="meaning">Meaning</label>
-                <input id="meaning" name="meaning" type="text" required>
-                <button type="button" onclick="generateMeaning()" class="secondary-btn">Generate Meaning (AI)</button>
+                <input id="meaning" name="meaning" type="textarea" placeholder="Meaning" required>
+                <button type="button" onclick="generateMeaning()" class="secondary-btn">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  Generate Meaning
+                </button>
                 <div id="meaning-result" style="margin-top:10px;"></div>
             </div>
 
             <div class="form-row">
                 <label for="idiom_translation">Idiom Translation (optional)</label>
-                <input id="idiom_translation" name="idiom_translation" type="text">
+                <input id="idiom_translation" name="idiom_translation" type="text" placeholder="Idiom translation">
             </div>
 
             <div class="form-row">
                 <label for="meaning_translation">Meaning Translation (optional)</label>
-                <input id="meaning_translation" name="meaning_translation" type="text">
+                <input id="meaning_translation" name="meaning_translation" type="text" placeholder="Meaning translation">
                 <button type="button" onclick="generateMeaningTranslation()" class="secondary-btn">
-                    Generate Meaning Translation (AI)
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Meaning Translation
                   </button>
             <div id="translation-result" style="margin-top:10px;"></div>
             </div>
 
             <div class="form-row">
-                <button type="button" onclick="suggestConcept()" id="suggestConceptBtn" class="secondary-btn">
-                    Suggest Concept (AI)
-                </button>
-                <div id="concept-result" class="hint"></div>
-                <input type="hidden" id="suggested_concept" name="suggested_concept">
-            </div>
+    <div class="concept-line">
+        <select id="concept_id" name="concept_id">
+            <option value="">Choose concept</option>
+            {% for concept in concepts %}
+                <option value="{{ concept.id }}">{{ concept.description }}</option>
+            {% endfor %}
+        </select>
 
+        <button type="button" onclick="suggestConcept()" id="suggestConceptBtn" class="ai-btn">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Suggest semantic concept
+        </button>
+    </div>
+
+    <div id="concept-result" class="hint"></div>
+    <input type="hidden" id="suggested_concept" name="suggested_concept">
+</div>
+<div class="form-row">
+    <input id="submitted_by_name" name="submitted_by_name" type="text" placeholder="Your name (Optional)">
+</div>
+
+<div class="form-row">
+    <input id="submitted_by_email" name="submitted_by_email" type="email" placeholder="Your email (Optional)">
+</div>
+
+<div class="form-row notify-row">
+    <label class="notify-label">
+        <input id="notify_user" name="notify_user" type="checkbox" value="1">
+        Notify me when my suggestion is reviewed
+    </label>
+</div>
             <button type="submit" class="primary-btn">Submit</button>
         </form>
 
@@ -87,37 +119,36 @@
             <a href="/heart-sayings">&larr; Back to overview</a>
         </p>
     </div>
-
     <script>
     async function suggestConcept() {
-      const idiomEl = document.getElementById("idiom");
-      const meaningEl = document.getElementById("meaning");
-      const resultBox = document.getElementById("concept-result");
-      const hiddenConcept = document.getElementById("suggested_concept");
+    const idiomEl = document.getElementById("idiom");
+    const meaningEl = document.getElementById("meaning");
+    const resultBox = document.getElementById("concept-result");
+    const hiddenConcept = document.getElementById("suggested_concept");
 
-      if (!idiomEl || !meaningEl || !resultBox) {
+    if (!idiomEl || !meaningEl || !resultBox) {
         console.error("Required concept elements not found.");
         return;
-      }
+    }
 
-      const idiom = idiomEl.value.trim();
-      const meaning = meaningEl.value.trim();
+    const idiom = idiomEl.value.trim();
+    const meaning = meaningEl.value.trim();
 
-      resultBox.innerHTML = "Checking suggestion...";
+    resultBox.innerHTML = "Checking suggestion...";
 
-      try {
+    try {
         const response = await fetch("/heart-sayings/api/suggest-concept", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ idiom, meaning })
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ idiom, meaning })
         });
 
         const data = await response.json();
 
         if (data.success) {
-          resultBox.innerHTML = `
+            resultBox.innerHTML = `
             <div style="padding:10px; border:1px solid #ccc; border-radius:8px; margin-top:10px;">
               <p><strong>AI suggestion:</strong> ${data.suggested_concept}</p>
               <p><strong>Confidence:</strong> ${Math.round((data.confidence || 0) * 100)}%</p>
@@ -125,126 +156,128 @@
             </div>
           `;
 
-          if (hiddenConcept) {
-            hiddenConcept.value = data.suggested_concept || "";
-          }
+            if (hiddenConcept) {
+                hiddenConcept.value = data.suggested_concept || "";
+            }
         } else {
-          resultBox.innerHTML = `<p>${data.error || "No concept suggestion available."}</p>`;
+            resultBox.innerHTML = `<p>${data.error || "No concept suggestion available."}</p>`;
         }
-      } catch (error) {
+    } catch (error) {
         console.error("Concept suggestion error:", error);
         resultBox.innerHTML = `<p>Could not generate a suggestion.</p>`;
-      }
     }
+}
 
-    async function generateMeaning() {
-      const idiomEl = document.getElementById("idiom");
-      const languageEl = document.getElementById("language");
-      const translationEl = document.getElementById("idiom_translation");
-      const meaningEl = document.getElementById("meaning");
-      const resultBox = document.getElementById("meaning-result");
+async function generateMeaning() {
+    const idiomEl = document.getElementById("idiom");
+    const languageEl = document.getElementById("language");
+    const translationEl = document.getElementById("idiom_translation");
+    const meaningEl = document.getElementById("meaning");
+    const resultBox = document.getElementById("meaning-result");
 
-      if (!idiomEl || !resultBox || !meaningEl) {
+    if (!idiomEl || !resultBox || !meaningEl) {
         console.error("Required meaning elements not found.");
         return;
-      }
+    }
 
-      const idiom = idiomEl.value.trim();
-      const language = languageEl ? languageEl.value.trim() : "";
-      const idiom_translation = translationEl ? translationEl.value.trim() : "";
+    const idiom = idiomEl.value.trim();
+    const language = languageEl ? languageEl.value.trim() : "";
+    const idiom_translation = translationEl ? translationEl.value.trim() : "";
 
-      if (!idiom) {
+    if (!idiom) {
         resultBox.innerHTML = "<p>Please enter an idiom first.</p>";
         return;
-      }
+    }
 
-      resultBox.innerHTML = "<p>Generating meaning...</p>";
+    resultBox.innerHTML = "<p>Generating meaning...</p>";
 
-      try {
+    try {
         const response = await fetch("/heart-sayings/api/generate-meaning", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            idiom,
-            language,
-            idiom_translation
-          })
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idiom,
+                language,
+                idiom_translation
+            })
         });
 
         const data = await response.json();
 
         if (data.success) {
-          resultBox.innerHTML = `
+            resultBox.innerHTML = `
             <div style="padding:10px; border:1px solid #ccc; border-radius:8px; margin-top:10px;">
               <p><strong>Generated meaning:</strong> ${data.generated_meaning}</p>
               <p><strong>Source:</strong> ${data.source}</p>
             </div>
           `;
 
-          if (!meaningEl.value.trim()) {
-            meaningEl.value = data.generated_meaning;
-          }
+            if (!meaningEl.value.trim()) {
+                meaningEl.value = data.generated_meaning;
+            }
         } else {
-          resultBox.innerHTML = `<p>${data.error || "Could not generate meaning."}</p>`;
+            resultBox.innerHTML = `<p>${data.error || "Could not generate meaning."}</p>`;
         }
-      } catch (error) {
+    } catch (error) {
         console.error("Meaning generation error:", error);
         resultBox.innerHTML = "<p>Could not generate meaning.</p>";
-      }
     }
-    async function generateMeaningTranslation() {
-  const meaningEl = document.getElementById("meaning");
-  const translationEl = document.getElementById("meaning_translation");
-  const resultBox = document.getElementById("translation-result");
+}
+async function generateMeaningTranslation() {
+    const meaningEl = document.getElementById("meaning");
+    const translationEl = document.getElementById("meaning_translation");
+    const resultBox = document.getElementById("translation-result");
 
-  if (!meaningEl || !translationEl || !resultBox) {
-    console.error("Required translation elements not found.");
-    return;
-  }
-
-  const text = meaningEl.value.trim();
-
-  if (!text) {
-    resultBox.innerHTML = "<p>Please enter or generate a meaning first.</p>";
-    return;
-  }
-
-  resultBox.innerHTML = "<p>Generating translation...</p>";
-
-  try {
-    const response = await fetch("/heart-sayings/api/generate-translation", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        text: text,
-        target_language: "English"
-      })
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      resultBox.innerHTML = `
-        <div style="padding:10px; border:1px solid #ccc; border-radius:8px; margin-top:10px;">
-          <p><strong>Generated translation:</strong> ${data.generated_translation}</p>
-          <p><strong>Source:</strong> ${data.source}</p>
-        </div>
-      `;
-
-      if (!translationEl.value.trim()) {
-        translationEl.value = data.generated_translation;
-      }
-    } else {
-      resultBox.innerHTML = `<p>${data.error || "Could not generate translation."}</p>`;
+    if (!meaningEl || !translationEl || !resultBox) {
+        console.error("Required translation elements not found.");
+        return;
     }
-  } catch (error) {
-    console.error("Translation generation error:", error);
-    resultBox.innerHTML = "<p>Could not generate translation.</p>";
-  }
+
+    const text = meaningEl.value.trim();
+    console.log("TEXT SENT TO TRANSLATE:", text);
+
+    if (!text) {
+        resultBox.innerHTML = "<p>Please enter or generate a meaning first.</p>";
+        return;
+    }
+
+    resultBox.innerHTML = "<p>Generating translation...</p>";
+
+    try {
+        const response = await fetch("/heart-sayings/api/generate-translation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                text: text,
+                target_language: "English"
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            resultBox.innerHTML = `
+    <div style="padding:10px; border:1px solid #ccc; border-radius:8px; margin-top:10px;">
+        <p><strong>Generated translation:</strong> ${data.generated_translation}</p>
+        <p><strong>Source:</strong> ${data.source}</p>
+    </div>
+`;
+
+if (!translationEl.value.trim()) {
+    translationEl.value = data.generated_translation;
+}
+        } else {
+            resultBox.innerHTML = `<p>${data.error || "Could not generate translation."}</p>`;
+        }
+    } catch (error) {
+        console.error("Translation generation error:", error);
+        resultBox.innerHTML = "<p>Could not generate translation.</p>";
+    }
 }
     </script>
 </body>

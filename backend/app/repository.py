@@ -50,16 +50,46 @@ def get_all_concepts():
 # ----------- suggestion ------------
 
 
-def insert_suggestion(language, idiom, meaning, idiom_translation, meaning_translation, concept_id=None):
+def insert_suggestion(
+    language,
+    idiom,
+    meaning,
+    idiom_translation,
+    meaning_translation,
+    concept_id=None,
+    submitted_by_name=None,
+    submitted_by_email=None,
+    notify_user=False
+):
     """
     Insert a new user-submitted idiom suggestion into the database.
     """
     cur = repo.connection.cursor()
     cur.execute("""
-        INSERT INTO idiom_suggestions 
-        (language, idiom, meaning, idiom_translation, meaning_translation, concept_id)
-        VALUES (%s, %s, %s, %s, %s, %s)
-    """, (language, idiom, meaning, idiom_translation, meaning_translation, concept_id))
+    INSERT INTO idiom_suggestions 
+    (
+        language,
+        idiom,
+        meaning,
+        idiom_translation,
+        meaning_translation,
+        concept_id,
+        submitted_by_name,
+        submitted_by_email,
+        notify_user
+    )
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+""", (
+    language,
+    idiom,
+    meaning,
+    idiom_translation,
+    meaning_translation,
+    concept_id,
+    submitted_by_name,
+    submitted_by_email,
+    notify_user
+))
     repo.connection.commit()
 
 # Get a sorted list of all unique languages stored in the idioms table, ignoring empty or NULL values.
@@ -124,6 +154,9 @@ def get_pending_suggestions():
             s.meaning_translation,
             s.concept_id,
             s.status,
+            s.submitted_by_name,
+            s.submitted_by_email,
+            s.notify_user,
             s.created_at,
             CASE 
                 WHEN EXISTS (
@@ -144,37 +177,56 @@ def get_pending_suggestions():
 def approve_suggestion(id):
     cur = repo.connection.cursor()
 
-    # 1) Get the suggestion row
     cur.execute("""
-        SELECT language, idiom, meaning, idiom_translation, meaning_translation, concept_id
+        SELECT 
+            language,
+            idiom,
+            meaning,
+            idiom_translation,
+            meaning_translation,
+            concept_id,
+            submitted_by_name,
+            submitted_by_email,
+            notify_user
         FROM idiom_suggestions
         WHERE id = %s
     """, (id,))
+
     row = cur.fetchone()
 
     if not row:
-        # no such suggestion, nothing to do
         return
 
-    language, idiom, meaning, idiom_translation, meaning_translation, concept_id = row
+    language = row[0]
+    idiom = row[1]
+    meaning = row[2]
+    idiom_translation = row[3]
+    meaning_translation = row[4]
+    concept_id = row[5]
 
-    # 2) Check if an idiom with same language + idiom text already exists
     cur.execute("""
-        SELECT COUNT(*) 
+        SELECT COUNT(*)
         FROM idioms
         WHERE language = %s
         AND idiom = %s
     """, (language, idiom))
-    (count_existing,) = cur.fetchone()
 
-    # 3) Insert only if no duplicate exists
+    count_existing = cur.fetchone()[0]
+
     if count_existing == 0:
         cur.execute("""
-            INSERT INTO idioms (language, idiom, meaning, idiom_translation, meaning_translation, concept_id)
+            INSERT INTO idioms
+            (language, idiom, meaning, idiom_translation, meaning_translation, concept_id)
             VALUES (%s, %s, %s, %s, %s, %s)
-        """, (language, idiom, meaning, idiom_translation, meaning_translation, concept_id))
+        """, (
+            language,
+            idiom,
+            meaning,
+            idiom_translation,
+            meaning_translation,
+            concept_id
+        ))
 
-    # 4) In any case, mark suggestion as approved
     cur.execute("""
         UPDATE idiom_suggestions
         SET status = 'approved'
@@ -182,7 +234,6 @@ def approve_suggestion(id):
     """, (id,))
 
     repo.connection.commit()
-
 
 
 def reject_suggestion(id):

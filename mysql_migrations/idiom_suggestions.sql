@@ -7,6 +7,9 @@ CREATE TABLE idiom_suggestions (
   meaning_translation VARCHAR(255),
   concept_id INT NULL,
   status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+  submitted_by_name VARCHAR(255),
+  submitted_by_email VARCHAR(255),
+  notify_user BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -93,7 +93,9 @@ def suggest():
 
         # final DB value 
         concept_id= None
-
+        submitted_by_name = request.form.get("submitted_by_name", "").strip()
+        submitted_by_email = request.form.get("submitted_by_email", "").strip()
+        notify_user = request.form.get("notify_user") == "1"
         # AI auto-suggestion if frontend didn't provide one
         if not suggested_concept:
             ai_result = suggest_concept_from_text(idiom, meaning)
@@ -106,7 +108,7 @@ def suggest():
         # validation
         if not language or not idiom or not meaning:
             error = "Language, idiom, and meaning are required."
-            return render_template("suggest.html", error=error)
+            return render_template("suggest.html", error=error, concepts=get_all_concepts())
 
         insert_suggestion(
             language,
@@ -114,12 +116,16 @@ def suggest():
             meaning,
             idiom_translation,
             meaning_translation,
-            concept_id   # THIS is the key change for ai assistant
+            concept_id,   # THIS is the key change for ai assistant
+            submitted_by_name,
+            submitted_by_email,
+            notify_user
         )
 
         return render_template("suggest_success.html")
-
-    return render_template("suggest.html")
+    
+    concepts = get_all_concepts()
+    return render_template("suggest.html", concepts=concepts)
 
 @bp.route('/heart-sayings/admin/suggestions', methods=['GET'])
 def review_suggestions():
@@ -214,10 +220,8 @@ def api_idioms():
 @bp.route('/heart-sayings/api/suggest-concept', methods=['POST'])
 def api_suggest_concept():
     data = request.get_json(silent=True) or {}
-
     idiom = (data.get("idiom") or "").strip()
     meaning = (data.get("meaning") or "").strip()
-
     if not idiom and not meaning:
         return jsonify({
             "success": False,
@@ -225,10 +229,11 @@ def api_suggest_concept():
         }), 400
 
     result = suggest_concept_from_text(idiom, meaning)
-
+    concept_id = get_concept_id_by_description(result["suggested_concept"])
     return jsonify({
         "success": True,
         "suggested_concept": result["suggested_concept"],
+        "concept_id": concept_id,
         "confidence": result["confidence"],
         "reason": result["reason"]
     })
@@ -262,9 +267,10 @@ def api_generate_meaning():
 @bp.route('/heart-sayings/api/generate-translation', methods=['POST'])
 def api_generate_translation():
     data = request.get_json(silent=True) or {}
-
     text = (data.get("text") or "").strip()
     target_language = (data.get("target_language") or "English").strip()
+    print("TEXT RECEIVED:", text)
+    print("TARGET LANGUAGE:", target_language)
 
     if not text:
         return jsonify({

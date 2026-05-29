@@ -55,6 +55,9 @@
                             <th>Submitted</th>
                             <th>Actions</th>
                             <th>Note</th>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Notify</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,8 +71,11 @@
                             5 meaning_translation
                             6 concept_id
                             7 status
-                            8 created_at
-                            9 is_duplicate
+                            8 submitted_by_name,
+                            9 submitted_by_email,
+                            10 notify_user,
+                            11 created_at
+                            12 is_duplicate
                         #}
                         <tr>
                             <td>{{ s[1] }}</td>
@@ -81,7 +87,7 @@
                             <td>{{ ai["suggested_concept"] }}</td>
                             <td>{{ (ai["confidence"] * 100) | round | int }}%</td>
                             <td class="small-text">{{ ai["reason"] }}</td>
-                            <td class="small-text">{{ s[8] }}</td>
+                            <td class="small-text">{{ s[11] }}</td>
                             <td>
                                 <a href="/heart-sayings/admin/approve/{{ s[0] }}" class="action-approve">
                                     Approve
@@ -91,7 +97,7 @@
                                 </a>
                             </td>
                             <td>
-                                {% if s[9] == 1 %}
+                                {% if s[12] == 1 %}
                                     <span class="badge badge-duplicate">
                                         Already exists in idioms
                                     </span>
@@ -101,6 +107,9 @@
                                     </span>
                                 {% endif %}
                             </td>
+                            <td>{{ s[8] or "—" }}</td>
+<td>{{ s[9] or "—" }}</td>
+<td>{{ "Yes" if s[10] else "No" }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
