@@ -1,4 +1,5 @@
 from flask_mysqldb import MySQL
+from .email_helper import send_review_notification
 
 # SQL initialisation
 repo = MySQL()
@@ -203,6 +204,9 @@ def approve_suggestion(id):
     idiom_translation = row[3]
     meaning_translation = row[4]
     concept_id = row[5]
+    submitted_by_name = row[6]
+    submitted_by_email = row[7]
+    notify_user = row[8]
 
     cur.execute("""
         SELECT COUNT(*)
@@ -234,9 +238,52 @@ def approve_suggestion(id):
     """, (id,))
 
     repo.connection.commit()
-
+    print("APPROVE notify_user:", notify_user)
+    print("APPROVE submitted_by_email:", submitted_by_email)
+    if notify_user and submitted_by_email:
+        try:
+            send_review_notification(
+                submitted_by_email,
+                submitted_by_name,
+                idiom,
+                "approved"
+            )
+        except Exception as e:
+            print("Approval email failed:", e)
 
 def reject_suggestion(id):
     cur = repo.connection.cursor()
-    cur.execute("UPDATE idiom_suggestions SET status='rejected' WHERE id=%s", (id,))
+
+    cur.execute("""
+        SELECT
+            idiom,
+            submitted_by_name,
+            submitted_by_email,
+            notify_user
+        FROM idiom_suggestions
+        WHERE id = %s
+    """, (id,))
+
+    row = cur.fetchone()
+
+    if not row:
+        return
+
+    idiom, submitted_by_name, submitted_by_email, notify_user = row
+
+    cur.execute("""
+        UPDATE idiom_suggestions
+        SET status = 'rejected'
+        WHERE id = %s
+    """, (id,))
+
     repo.connection.commit()
+
+    # Notify contributor if requested
+    if notify_user and submitted_by_email:
+        send_review_notification(
+            submitted_by_email,
+            submitted_by_name,
+            idiom,
+            "rejected"
+        )

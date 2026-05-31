@@ -14,26 +14,28 @@
 
 <body>
   {% include "includes/gdpr_popup.html" %}
-  <div class="v-toolbar__content" style="height: 70px;">
-    <img id="logo" src="../static/img/logo.png" alt="logo JGU">
-    <h2 class="title">Heart sayings</h2>
-    <div class="v-spacer"></div>
+  <header class="site-header">
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
+        </div>
 
-    <nav class="navigation">
-      <a href="/heart-sayings/concepts">Concepts</a>
-      <a href="/heart-sayings/project">Project</a>
-      <a href="/heart-sayings/help">Help</a>
+        <h2 class="navbar-title">Heart sayings</h2>
 
-      {% if admin_logged_in %}
-        <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
-      {% else %}
-        <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
-      {% endif %}
-    </nav>
-  </div>
+        <nav class="navigation">
+            <a href="/heart-sayings/concepts">Concepts</a>
+            <a href="/heart-sayings/project">Project</a>
+            <a href="/heart-sayings/help">Help</a>
 
-  <hr id="red-line">
-
+            {% if admin_logged_in %}
+                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+            {% else %}
+                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+            {% endif %}
+        </nav>
+    </div>
+    <div class="navbar-red-line"></div>
+</header>
   <div class="page">
     <h1>Find idioms and expressions in different languages with the word HEART</h1>
 

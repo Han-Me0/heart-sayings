@@ -307,7 +307,7 @@ function init() {
     searchBar?.addEventListener("input", () => {
         if (typeof hideConceptResults === "function") hideConceptResults();
 
-        // Match your prior behavior: search across all languages
+        // Match prior behavior: search across all languages
         if (languageSelector) languageSelector.value = "none";
 
         const term = (searchBar.value || "").toLowerCase().trim();

@@ -109,17 +109,20 @@ def generate_meaning_with_llm(idiom: str, language: str = "", idiom_translation:
     prompt = f"""
 You are helping an idiom database admin.
 
-Generate a short, clear meaning for this idiom.
+Task:
+Generate a short, clear draft meaning for a submitted idiom.
 
 Idiom: {idiom}
 Language: {language}
 Literal translation: {idiom_translation}
 
-Rules:
+Instructions:
+- Write the generated meaning in this exact language: {language}.
+- Do not use English unless the language field is empty or English.
 - Write 1 or 2 short sentences.
-- Explain the figurative meaning.
-- Be neutral and concise.
-- If unclear, say that cautiously.
+- Explain the figurative meaning, not only the literal meaning.
+- If the idiom is unclear or possibly not a standard idiom, say that cautiously.
+- Be concise and neutral.
 """
 
     result = call_openai(prompt)

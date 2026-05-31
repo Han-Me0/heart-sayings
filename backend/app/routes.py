@@ -38,6 +38,7 @@ from .ai_helper import (
     generate_meaning_with_llm,
     generate_translation_with_llm
 )
+from .email_helper import send_review_notification
 
 bp = Blueprint('main', __name__)
 
@@ -257,7 +258,7 @@ def api_generate_meaning():
         language=language,
         idiom_translation=idiom_translation
     )
-
+    print("LANGUAGE SENT TO AI:", language)
     return jsonify({
         "success": True,
         "source": result["source"],
@@ -296,3 +297,15 @@ def privacy():
 @bp.route('/terms')
 def terms():
     return render_template("terms.html")
+
+@bp.route("/heart-sayings/test-email")
+def test_email():
+
+    send_review_notification(
+        "haninjamalmzher@gmail.com",
+        "Hanin",
+        "heart of gold",
+        "approved"
+    )
+
+    return "Email test sent"

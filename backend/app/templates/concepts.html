@@ -9,27 +9,31 @@
 </head>
 <body>
     {% include "includes/gdpr_popup.html" %}
-    <div class="v-toolbar__content" style="height: 70px;">
-        <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
-        <h2 class="title">Heart sayings</h2>
-        <div class="v-spacer"></div>
+<header class="site-header">
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
+        </div>
+
+        <h2 class="navbar-title">Heart sayings</h2>
+
         <nav class="navigation">
             <a href="/heart-sayings">Home</a>
             <a href="/heart-sayings/project">Project</a>
             <a href="/heart-sayings/help">Help</a>
 
             {% if admin_logged_in %}
-  <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
-{% else %}
-  <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
-{% endif %}
-
+                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+            {% else %}
+                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+            {% endif %}
         </nav>
     </div>
-    <div><hr id="red-line"></div>
-<div class="page">
+    <div class="navbar-red-line"></div>
+</header>
 
-  <h1>Concept overview</h1>
+<div class="page">
+  <h1>Concepts Overview</h1>
   <p class="hint">Select a concept to see idioms across languages.</p>
 
   <!-- OVERVIEW MODE -->

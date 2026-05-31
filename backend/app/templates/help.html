@@ -12,22 +12,29 @@
     
 </head>
 <body>
-    <div class="v-toolbar__content" style="height: 70px;">
-        <img id="logo" src="../static/img/logo.webp" alt="Nightingale Project Logo">
-        <h2 class="title">Heart sayings</h2>
-        <div class="v-spacer"></div>
-        <div class="navigation">
-            <a href="/heart-sayings">Home</a>
-            <a href="/heart-sayings/project">Project</a>
-            <a href="/heart-sayings/help">Help</a>
-            {% if admin_logged_in %}
-  <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
-{% else %}
-  <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
-{% endif %}
-
+    <header class="site-header">
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
         </div>
+
+        <h2 class="navbar-title">Heart sayings</h2>
+
+        <nav class="navigation">
+            <a href="/heart-sayings">Home</a>
+            <a href="/heart-sayings/concepts">Concepts</a>
+            <a href="/heart-sayings/project">Project</a>
+
+            {% if admin_logged_in %}
+                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+            {% else %}
+                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+            {% endif %}
+        </nav>
     </div>
+
+    <div class="navbar-red-line"></div>
+</header>
     <div>
         <hr id="red-line">
     </div>
