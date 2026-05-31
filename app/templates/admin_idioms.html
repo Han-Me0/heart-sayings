@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Idioms</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img id="logo"
+                 src="{{ url_for('static', filename='img/logo.png') }}"
+                 alt="logo">
+        </div>
+
+        <h2 class="navbar-title">Heart sayings</h2>
+
+        <nav class="navigation">
+            <a href="/heart-sayings">Home</a>
+            <a href="/heart-sayings/admin/suggestions">Suggestions</a>
+            <a href="/heart-sayings/admin/logout">Logout</a>
+        </nav>
+    </div>
+
+    <div class="navbar-red-line"></div>
+</header>
+
+<div class="page">
+    <h1>Manage Idioms</h1>
+
+    {% if idioms|length == 0 %}
+        <p>No idioms found.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th>Language</th>
+                        <th>Idiom</th>
+                        <th>Meaning</th>
+                        <th>Concept</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in idioms %}
+                    <tr>
+                        <td>{{ item.language }}</td>
+
+                        <td>
+                            <strong>{{ item.idiom }}</strong>
+                        </td>
+
+                        <td>{{ item.meaning }}</td>
+
+                        <td>
+                            {{ item.concept_description or "—" }}
+                        </td>
+
+                        <td>
+                            <a
+                                href="/heart-sayings/admin/idioms/edit/{{ item.id }}"
+                                class="action-approve">
+                                Edit
+                            </a>
+
+                            <form
+                                method="post"
+                                action="/heart-sayings/admin/idioms/delete/{{ item.id }}"
+                                style="display:inline;"
+                                onsubmit="return confirm('Delete this idiom?');">
+
+                                <button
+                                    type="submit"
+                                    class="action-reject">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    {% endif %}
+
+    <p style="margin-top:20px;">
+        <a href="/heart-sayings/admin/suggestions">
+            ← Back to suggestions
+        </a>
+    </p>
+
+</div>
+
+</body>
+</html>

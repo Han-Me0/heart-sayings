@@ -195,19 +195,25 @@ table tr:hover {
 }
 
 .suggest-btn-large {
-    display: inline-block;
-    padding: 10px 18px;
-    background-color: #3e59a4a8;
-    /* Your main red */
+    display: block;
+    width: 24%;
+    min-width: 140px;
+    margin: 23px auto 15px;
+    min-height: 46px;
+    border: none;
+    border-radius: 22px;
+    background: #FE0F77;
     color: white;
-    border-radius: 6px;
+    font-family: sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(220, 92, 150, 0.28);
     text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
 }
 
 .suggest-btn-large:hover {
-    background-color: #122f81a8;
+    background-color: #cd1364;
 }
 
 .hint {
@@ -260,7 +266,7 @@ table tr:hover {
 .form-row label {
     margin-bottom: 4px;
     font-weight: 600;
-    color: #444;
+    color: #6b7280;
 }
 
 .form-row input {
@@ -1049,7 +1055,7 @@ body {
     display: block;
     width: 30%;
     min-width: 140px;
-    margin: 16px auto 0;
+    margin: 23px auto 15px;
     min-height: 46px;
     border: none;
     border-radius: 22px;
@@ -1167,6 +1173,10 @@ body {
     min-height: auto;
     margin: 0;
     box-shadow: none;
+}
+
+#notify_user {
+    color: #6b7280;
 }
 
 @media (max-width: 700px) {

@@ -4,11 +4,12 @@ from .email_helper import send_review_notification
 # SQL initialisation
 repo = MySQL()
 
-# Select all idioms from database
+# Read idioms from database
 def get_all_ideoms():
     cur = repo.connection.cursor()
     cur.execute("""
         SELECT DISTINCT
+                i.id,
                 TRIM(i.language) AS language,
                 i.idiom,
                 i.meaning,
@@ -22,9 +23,41 @@ def get_all_ideoms():
         WHERE i.language IS NOT NULL
             AND TRIM(i.language) <> ''
 """)
+    
     rows = cur.fetchall()
     data = to_map(rows)
     return data
+
+def get_idiom_by_id(id):
+    cur = repo.connection.cursor()
+
+    cur.execute("""
+        SELECT
+            id,
+            language,
+            idiom,
+            meaning,
+            idiom_translation,
+            meaning_translation,
+            concept_id
+        FROM idioms
+        WHERE id = %s
+    """, (id,))
+
+    row = cur.fetchone()
+
+    if not row:
+        return None
+
+    return {
+        "id": row[0],
+        "language": row[1],
+        "idiom": row[2],
+        "meaning": row[3],
+        "idiom_translation": row[4],
+        "meaning_translation": row[5],
+        "concept_id": row[6]
+    }
 
 # edited so there will be no duplicate
 def get_all_concepts():
@@ -48,9 +81,7 @@ def get_all_concepts():
     return result
 
 
-# ----------- suggestion ------------
-
-
+# Create suggestions 
 def insert_suggestion(
     language,
     idiom,
@@ -133,16 +164,18 @@ def to_map(raw_idioms):
 
     for row in raw_idioms:
         result.append({
-            "language": row[0],
-            "idiom": row[1],
-            "meaning": row[2],
-            "idiom_translation": row[3],
-            "meaning_translation": row[4],
-            "concept_id": row[5],
-            "concept_description": row[6]
+            "id": row[0],
+            "language": row[1],
+            "idiom": row[2],
+            "meaning": row[3],
+            "idiom_translation": row[4],
+            "meaning_translation": row[5],
+            "concept_id": row[6],
+            "concept_description": row[7]
         })
     return result
 
+# Admin review
 def get_pending_suggestions():
     cur = repo.connection.cursor()
     cur.execute("""
@@ -173,7 +206,6 @@ def get_pending_suggestions():
         ORDER BY s.created_at DESC
     """)
     return cur.fetchall()
-
 
 def approve_suggestion(id):
     cur = repo.connection.cursor()
@@ -238,8 +270,7 @@ def approve_suggestion(id):
     """, (id,))
 
     repo.connection.commit()
-    print("APPROVE notify_user:", notify_user)
-    print("APPROVE submitted_by_email:", submitted_by_email)
+    
     if notify_user and submitted_by_email:
         try:
             send_review_notification(
@@ -287,3 +318,48 @@ def reject_suggestion(id):
             idiom,
             "rejected"
         )
+
+# Admin update/ delete
+def update_idiom(
+    id,
+    language,
+    idiom,
+    meaning,
+    idiom_translation,
+    meaning_translation,
+    concept_id
+):
+    cur = repo.connection.cursor()
+
+    cur.execute("""
+        UPDATE idioms
+        SET
+            language = %s,
+            idiom = %s,
+            meaning = %s,
+            idiom_translation = %s,
+            meaning_translation = %s,
+            concept_id = %s
+        WHERE id = %s
+    """, (
+        language,
+        idiom,
+        meaning,
+        idiom_translation,
+        meaning_translation,
+        concept_id,
+        id
+    ))
+
+    repo.connection.commit()
+
+
+def delete_idiom(id):
+    cur = repo.connection.cursor()
+
+    cur.execute("""
+        DELETE FROM idioms
+        WHERE id = %s
+    """, (id,))
+
+    repo.connection.commit()

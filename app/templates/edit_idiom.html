@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Idiom</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="site-header">
+    <div class="navbar">
+        <div class="navbar-logo">
+            <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
+        </div>
+
+        <h2 class="navbar-title">Heart sayings</h2>
+
+        <nav class="navigation">
+            <a href="/heart-sayings">Home</a>
+            <a href="/heart-sayings/admin/idioms">Manage Idioms</a>
+            <a href="/heart-sayings/admin/logout">Logout</a>
+        </nav>
+    </div>
+    <div class="navbar-red-line"></div>
+</header>
+
+<div class="page">
+    <div class="suggest-form">
+        <h1>Edit Idiom</h1>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            <div class="form-row">
+                <input name="language" type="text" placeholder="Language" value="{{ idiom_data.language }}" required>
+            </div>
+
+            <div class="form-row">
+                <input name="idiom" type="text" placeholder="Idiom / Expression" value="{{ idiom_data.idiom }}" required>
+            </div>
+
+            <div class="form-row">
+                <textarea name="meaning" placeholder="Meaning" required>{{ idiom_data.meaning }}</textarea>
+            </div>
+
+            <div class="form-row">
+                <input name="idiom_translation" type="text" placeholder="Idiom Translation" value="{{ idiom_data.idiom_translation or '' }}">
+            </div>
+
+            <div class="form-row">
+                <input name="meaning_translation" type="text" placeholder="Meaning Translation" value="{{ idiom_data.meaning_translation or '' }}">
+            </div>
+
+            <div class="form-row">
+                <select name="concept_id">
+                    <option value="">Choose concept</option>
+                    {% for concept in concepts %}
+                        <option value="{{ concept.id }}"
+                            {% if idiom_data.concept_id == concept.id %}selected{% endif %}>
+                            {{ concept.description }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="primary-btn">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

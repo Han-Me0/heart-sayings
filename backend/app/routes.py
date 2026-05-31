@@ -31,7 +31,10 @@ from .repository import (get_all_ideoms,
     approve_suggestion,
     reject_suggestion,
     get_languages,
-    get_concept_id_by_description
+    get_concept_id_by_description,
+    get_idiom_by_id,
+    update_idiom,
+    delete_idiom
 )
 from .ai_helper import (
     suggest_concept_from_text,
@@ -57,7 +60,8 @@ def health():
 def index():
     data = get_all_ideoms()
     languages = get_languages()
-    print("FIRST ROW FROM DB:", data[0])
+    if data:
+        print("FIRST ROW FROM DB:", data[0])
     return render_template("index.html", result=data, languages = languages)
 
 
@@ -163,7 +167,79 @@ def reject_suggestion_route(suggestion_id):
     reject_suggestion(suggestion_id)
     return redirect("/heart-sayings/admin/suggestions")
 
-    # Add login + logout routes
+# Admin CRUD
+@bp.route('/heart-sayings/admin/idioms', methods=['GET'])
+def admin_idioms():
+    if not session.get("admin_logged_in"):
+        return redirect("/heart-sayings/admin/login")
+
+    idioms = get_all_ideoms()
+
+    return render_template(
+        "admin_idioms.html",
+        idioms=idioms,
+        admin_logged_in=session.get("admin_logged_in")
+    )
+
+
+@bp.route('/heart-sayings/admin/idioms/edit/<int:idiom_id>', methods=['GET', 'POST'])
+def edit_idiom_route(idiom_id):
+    if not session.get("admin_logged_in"):
+        return redirect("/heart-sayings/admin/login")
+
+    idiom_data = get_idiom_by_id(idiom_id)
+    concepts = get_all_concepts()
+
+    if not idiom_data:
+        return redirect("/heart-sayings/admin/idioms")
+
+    if request.method == "POST":
+        language = request.form.get("language", "").strip()
+        idiom = request.form.get("idiom", "").strip()
+        meaning = request.form.get("meaning", "").strip()
+        idiom_translation = request.form.get("idiom_translation", "").strip()
+        meaning_translation = request.form.get("meaning_translation", "").strip()
+        concept_id = request.form.get("concept_id") or None
+
+        if not language or not idiom or not meaning:
+            error = "Language, idiom, and meaning are required."
+            return render_template(
+                "edit_idiom.html",
+                idiom_data=idiom_data,
+                concepts=concepts,
+                error=error,
+                admin_logged_in=session.get("admin_logged_in")
+            )
+
+        update_idiom(
+            idiom_id,
+            language,
+            idiom,
+            meaning,
+            idiom_translation,
+            meaning_translation,
+            concept_id
+        )
+
+        return redirect("/heart-sayings/admin/idioms")
+
+    return render_template(
+        "edit_idiom.html",
+        idiom_data=idiom_data,
+        concepts=concepts,
+        admin_logged_in=session.get("admin_logged_in")
+    )
+
+
+@bp.route('/heart-sayings/admin/idioms/delete/<int:idiom_id>', methods=['POST'])
+def delete_idiom_route(idiom_id):
+    if not session.get("admin_logged_in"):
+        return redirect("/heart-sayings/admin/login")
+
+    delete_idiom(idiom_id)
+
+    return redirect("/heart-sayings/admin/idioms")
+    # login + logout routes
 @bp.route('/heart-sayings/admin/login', methods=['GET', 'POST'])
 def admin_login():
     error = None
