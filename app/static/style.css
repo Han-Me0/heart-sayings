@@ -195,21 +195,25 @@ table tr:hover {
 }
 
 .suggest-btn-large {
-    display: block;
-    width: 24%;
-    min-width: 140px;
-    margin: 23px auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 29%;
+    min-width: 180px;
     min-height: 46px;
+    margin: 23px auto 15px;
     border: none;
     border-radius: 22px;
     background: #FE0F77;
     color: white;
     font-family: sans-serif;
-    font-size: 1.15rem;
+    font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(220, 92, 150, 0.28);
     text-decoration: none;
+
+    white-space: nowrap;
 }
 
 .suggest-btn-large:hover {
@@ -360,7 +364,7 @@ table tr:hover {
 /* review_suggestions page */
 .review-table {
     border-collapse: collapse;
-    width: 100%;
+    min-width: 1800px;
     font-size: 0.9rem;
 }
 
@@ -388,36 +392,6 @@ table tr:hover {
 .small-text {
     font-size: 0.8rem;
     color: #666;
-}
-
-/* Approve / reject buttons */
-.action-approve,
-.action-reject {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-right: 4px;
-}
-
-.action-approve {
-    background-color: #28a745;
-    color: white;
-}
-
-.action-approve:hover {
-    background-color: #1f7e34;
-}
-
-.action-reject {
-    background-color: #c00;
-    color: white;
-}
-
-.action-reject:hover {
-    background-color: #900;
 }
 
 /* Badges for duplicate/new */
@@ -524,14 +498,15 @@ table tr:hover {
 
 
 .admin-link {
-    font-size: 0.85rem;
-    opacity: 0.6;
-    transition: opacity 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .admin-link:hover {
     opacity: 1;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 :root {
@@ -548,6 +523,15 @@ table tr:hover {
     max-width: 1100px;
     margin: 0 auto;
     padding: 18px;
+}
+
+.page h1 {
+    color: #272727;
+    margin: 70px;
+    font-family: sans-serif;
+    font-size: 2.1rem;
+    font-style: normal;
+    font-weight: 600;
 }
 
 .controls {
@@ -575,19 +559,6 @@ select {
     margin: 10px 0;
 }
 
-.rolling {
-    position: relative;
-    display: inline-block;
-    font-size: 2rem;
-    line-height: 1.2;
-    padding: 0.2em 0.1em;
-}
-
-/* optional: small “wave/bounce” feel to text */
-.rolling {
-    animation: textWobble 2.2s ease-in-out infinite;
-}
-
 
 @keyframes textWobble {
 
@@ -602,11 +573,10 @@ select {
 }
 
 #clickHint {
-    font-size: 2rem;
-    color: #2a0637;
+    color: #333;
+    font-size: 1.3rem;
     margin-bottom: 10px;
-    font-family: bold;
-    font-style: italic;
+    font-style: arial, sans-serif;
 }
 
 
@@ -628,6 +598,8 @@ select {
 .idiom-card {
     position: relative;
     overflow: visible;
+    width: 100%;
+    box-sizing: border-box;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -675,9 +647,8 @@ select {
     display: inline-block;
     background: linear-gradient(180deg, #39b3da 0%, #1e9cc7 100%);
     color: #fff;
-
-    font-weight: 800;
-    font-size: .80rem;
+    font-weight: 900;
+    font-size: .9rem;
     letter-spacing: .06em;
     text-transform: uppercase;
     line-height: 1;
@@ -726,63 +697,278 @@ select {
     /* makes the diagonal */
 }
 
-
-
 /* Concepts page */
-.concepts-center {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-}
-
 .concept-cards {
-    width: min(720px, 92vw);
     display: grid;
-    grid-template-columns: repeat(2, minmax(240px, 1fr));
-    gap: 14px;
-}
-
-@media (max-width: 700px) {
-    .concept-cards {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: repeat(2, minmax(230px, 250px));
+    gap: 28px 34px;
+    justify-content: center;
+    align-items: stretch;
+    margin-top: 20px;
 }
 
 .concept-card {
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, .06);
-    border-radius: 14px;
-    padding: 16px 18px;
+    width: 100%;
+    min-height: 92px;
+    background: #d9d9d9;
+    border: none;
+    border-radius: 4px;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    box-sizing: border-box;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
-    transition: transform .12s ease, box-shadow .12s ease;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.concept-row {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    align-items: center;
+    column-gap: 14px;
+    width: 100%;
+}
+
+.concept-row i {
+    width: 42px;
+    text-align: center;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.concept-row span {
+    display: block;
+    text-align: left;
+    font-size: 1.02rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #111;
 }
 
 .concept-card:hover {
+    background: #cfcfcf;
     transform: translateY(-2px);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, .10);
 }
 
-.concept-card .concept-title {
-    font-weight: 700;
-    font-size: 1.05rem;
-    display: flex;
-    gap: 10px;
-    align-items: center;
+/* icon colors */
+.concept-card .fa-heart {
+    color: #ff4d1f;
 }
 
-.concept-card .concept-sub {
-    margin-top: 6px;
-    color: #6b7280;
-    font-size: .92rem;
+.concept-card .fa-fire {
+    color: #ff4d1f;
 }
 
-.btn-secondary {
-    border: 1px solid rgba(0, 0, 0, .15);
-    background: #fff;
-    padding: 10px 14px;
-    border-radius: 10px;
+.concept-card .fa-bullseye {
+    color: #ff4d1f;
+}
+
+.concept-card .fa-triangle-exclamation {
+    color: #f6c945;
+}
+
+.concept-card .fa-thumbs-down {
+    color: #ff4d1f;
+}
+
+.concept-card .fa-droplet {
+    color: #3e7fff;
+}
+
+.back-overview-btn {
+    background: #d7ebff;
+    color: #2c5f8f;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+.back-overview-btn:hover {
+    background: #c7e2fd;
+}
+
+.back-overview-btn i {
+    font-size: 0.85rem;
+}
+
+.back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0px;
+    margin-top: 52px;
+    background: #1e9cc7;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 18px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: sans-serif;
+}
+
+.back-home-btn:hover {
+    background: #1790b8;
+}
+
+.back-home-btn i {
+    color: white;
+}
+
+/* FINAL concepts page panel */
+
+.concepts-page {
+    max-width: 1050px;
+    margin: 55px auto 80px;
+    background: #ffffff;
+    min-height: 470px;
+    padding: 55px 40px 60px;
+    box-sizing: border-box;
+}
+
+.concepts-page h1 {
+    color: #222;
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-style: normal;
+    margin: 35px;
+}
+
+.concepts-page .hint {
+    color: #333;
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+}
+
+/* mobile */
+@media (max-width: 650px) {
+    .concept-cards {
+        grid-template-columns: minmax(240px, 280px);
+        gap: 18px;
+    }
+
+    .concept-card {
+        min-height: 86px;
+    }
+
+    .concept-row {
+        grid-template-columns: 38px 1fr;
+        column-gap: 12px;
+    }
+
+    .concept-row i {
+        width: 38px;
+        font-size: 27px;
+    }
+
+    .concept-row span {
+        font-size: 0.98rem;
+    }
+}
+
+/* FINAL concepts page card layout */
+
+.concept-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(230px, 250px));
+    gap: 28px 34px;
+    justify-content: center;
+    align-items: stretch;
+    margin-top: 20px;
+}
+
+.concept-card {
+    width: 100%;
+    min-height: 92px;
+    background: #d9d9d9;
+    border: none;
+    border-radius: 4px;
+    box-shadow: none;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 22px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.concept-row {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    align-items: center;
+    column-gap: 14px;
+    width: 100%;
+}
+
+.concept-row i {
+    width: 42px;
+    text-align: center;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.concept-row span {
+    display: block;
+    text-align: left;
+    font-size: 1.02rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #111;
+}
+
+.concept-card:hover {
+    background: #cfcfcf;
+    transform: translateY(-2px);
+}
+
+/* mobile */
+@media (max-width: 650px) {
+    .concept-cards {
+        grid-template-columns: minmax(240px, 280px);
+        gap: 18px;
+    }
+
+    .concept-card {
+        min-height: 86px;
+    }
+
+    .concept-row {
+        grid-template-columns: 38px 1fr;
+        column-gap: 12px;
+    }
+
+    .concept-row i {
+        width: 38px;
+        font-size: 27px;
+    }
+
+    .concept-row span {
+        font-size: 0.98rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .concepts-page {
+        padding: 50px 20px;
+    }
+
+    .concept-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .concept-card {
+        width: 220px;
+    }
 }
 
 .lang-badge {
@@ -831,9 +1017,9 @@ select {
 
 .idioms-viewport {
     overflow: hidden;
-    /* prevents page scrolling */
     width: 100%;
-    padding: 28px 17px 26px 25px;
+    padding: 28px 0 26px;
+    box-sizing: border-box;
 }
 
 .idioms-track {
@@ -842,16 +1028,18 @@ select {
     will-change: transform;
 }
 
-/* each "page" is a grid of cards */
 .idioms-page {
     flex: 0 0 100%;
-    padding: 8px 0;
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 8px 8px;
 }
 
 .idioms-page-grid {
     display: grid;
-    gap: 16px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 32px;
+    box-sizing: border-box;
 }
 
 /* responsive: 1 column on small screens */
@@ -1087,11 +1275,11 @@ body {
 }
 
 .navbar {
-    min-height: 165px;
+    min-height: 120px;
     display: grid;
-    grid-template-columns: 260px 1fr 260px;
+    grid-template-columns: 220px 1fr 260px;
     align-items: center;
-    padding: 0 90px;
+    padding: 0 70px;
 }
 
 .navbar-logo {
@@ -1101,17 +1289,17 @@ body {
 }
 
 #logo {
-    width: 210px;
+    width: 150px;
     height: auto;
 }
 
 .navbar-title {
     margin: 0;
     text-align: center;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 800;
     font-family: Arial, sans-serif;
-    background: linear-gradient(90deg, #8b0000 0%, #ff7b42 100%);
+    background: linear-gradient(90deg, #ff008d 0%, #e8ff00 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1120,15 +1308,15 @@ body {
 .navigation {
     display: flex;
     justify-content: flex-end;
-    gap: 42px;
+    gap: 30px;
     align-items: center;
 }
 
 .navigation a {
     margin: 0;
     padding: 0;
-    color: #333;
-    font-size: 1.25rem;
+    color: #4a4f51;
+    font-size: 1rem;
     font-weight: 600;
     font-family: Arial, sans-serif;
     text-decoration: none;
@@ -1141,12 +1329,19 @@ body {
 
 .navbar-red-line {
     height: 4px;
-    background: linear-gradient(to right, #8b0000, #ff6b6b);
+    background: linear-gradient(to right, #a70049, #ff6b6b);
     width: 100%;
 }
 
 #red-line {
     display: none;
+}
+
+.admin-link i {
+    display: inline;
+    margin-left: 0;
+    font-size: 0.95em;
+    color: #4a4f51;
 }
 
 .fa-solid,
@@ -1211,7 +1406,7 @@ body {
     }
 
     #logo {
-        width: 160px;
+        width: 138px;
     }
 
     .navigation {
@@ -1223,4 +1418,379 @@ body {
     .navbar-title {
         font-size: 2rem;
     }
+}
+
+/* =========================
+   Final unified page polish
+   ========================= */
+
+.app-panel {
+    max-width: 1050px;
+    margin: 55px auto 80px;
+    background: #ffffff;
+    padding: 45px 42px 55px;
+    box-sizing: border-box;
+    box-shadow: 0 14px 32px rgba(80, 80, 80, 0.08);
+}
+
+.index-page h1 {
+    margin: 20px auto 35px;
+    max-width: 850px;
+    font-size: 2rem;
+    line-height: 1.25;
+    color: #454545;
+}
+
+.index-page .controls {
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.index-page #languageSelector {
+    min-width: 190px;
+    color: #363636;
+}
+
+.index-page #searchBar {
+    max-width: 520px;
+    flex: 1;
+}
+
+.index-page .suggestion-box {
+    max-width: 720px;
+    margin: 40px auto 0;
+}
+
+#conceptMeta {
+    color: #666;
+    margin-bottom: 22px;
+}
+
+#conceptResultsView .controls {
+    justify-content: flex-start;
+    margin-bottom: 24px;
+}
+
+#conceptResultsView #languageFilter {
+    min-width: 180px;
+    color: #111;
+}
+
+#conceptResultsView #conceptSearch {
+    min-width: 260px;
+    flex: 1;
+}
+
+#conceptIdiomsGrid {
+    margin-top: 28px;
+}
+
+#conceptResultsView .idiom-card {
+    min-height: 160px;
+}
+
+#conceptResultsView {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+#conceptResultsView .idiom-grid {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+#conceptResultsView .idiom-card {
+    min-height: 170px;
+    padding: 22px 14px 18px;
+}
+
+/* No-carousel mode: keep JS structure, remove carousel clipping */
+.no-carousel .idioms-viewport,
+.no-carousel-viewport {
+    overflow: visible;
+    padding: 28px 0 26px;
+}
+
+.no-carousel .idioms-track,
+.no-carousel-track {
+    display: block;
+    transform: none !important;
+}
+
+.no-carousel .idioms-page {
+    width: 100%;
+    min-width: 100%;
+    padding: 0;
+}
+
+.no-carousel .idioms-page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+    gap: 32px 36px;
+    overflow: visible;
+}
+
+.no-carousel .idioms-dots {
+    display: none;
+}
+
+.no-carousel .idiom-card {
+    overflow: visible;
+}
+
+/* Disable carousel and show normal grid */
+
+#idiomsTrack.idioms-page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+    gap: 34px 38px;
+    overflow: visible;
+    margin-top: 32px;
+    padding-left: 28px;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+.idioms-dots {
+    display: none;
+}
+
+.idiom-card {
+    overflow: visible;
+}
+
+#conceptGrid.idiom-grid,
+#conceptIdiomsGrid.idiom-grid {
+    padding-left: 18px;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+
+#conceptResults {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+#conceptResults h2 {
+    color: #272727;
+    text-align: center;
+    margin: 30px auto 12px;
+    font-family: sans-serif;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 600;
+    max-width: 800px;
+}
+
+#conceptDescription {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+/*Admin review page*/
+.table-responsive {
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.review-table {
+    width: 100%;
+    min-width: 1100px;
+}
+
+.action-approve,
+.action-reject {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 95px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+    margin: 2px;
+}
+
+.action-approve {
+    background: #e7f7ed;
+    color: #157347;
+    border: 1px solid #b7e4c7;
+}
+
+.action-approve:hover {
+    background: #d4f2df;
+}
+
+.action-reject {
+    background: #fdecec;
+    color: #b42318;
+    border: 1px solid #f5c2c7;
+}
+
+.action-reject:hover {
+    background: #fad7d9;
+}
+
+.review-table th,
+.review-table td {
+    padding: 10px 14px;
+    vertical-align: top;
+}
+
+.review-table td:nth-child(3),
+/* Meaning */
+.review-table td:nth-child(5),
+/* Meaning translation */
+.review-table td:nth-child(9) {
+    /* Reason */
+    min-width: 260px;
+    white-space: normal;
+}
+
+.review-table td:nth-child(2),
+/* Idiom */
+.review-table td:nth-child(4) {
+    /* Idiom translation */
+    min-width: 180px;
+}
+
+.review-table td:nth-child(13),
+/* User */
+.review-table td:nth-child(14) {
+    /* Email */
+    min-width: 180px;
+}
+
+.admin-page .hint {
+    margin: 20px 0;
+}
+
+.admin-bage h1 {
+    margin: 70px;
+}
+
+.admin-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.admin-actions .back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0px;
+    margin-top: 0px;
+    background: #1e9cc7;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 18px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: sans-serif;
+}
+
+.admin-actions .admin-primary-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: auto !important;
+    min-width: 140px;
+    height: 42px;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    background: #FE0F77;
+    color: white !important;
+    border: none;
+    border-radius: 18px;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none !important;
+    box-shadow: 0 10px 20px rgba(220, 92, 150, 0.28);
+}
+
+.admin-primary-btn i {
+    color: white;
+}
+
+.admin-actions .admin-primary-btn:hover {
+    background: #cd1364;
+}
+
+#conceptTitle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+#conceptTitle i {
+    font-size: 1.8rem;
+}
+
+.concept-title-badge {
+    display: inline-block;
+    margin-top: 6px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.concept-result-title {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.concept-result-title i {
+    font-size: 1.8rem;
+}
+
+.concept-result-title .fa-heart,
+#conceptTitle .fa-heart {
+    color: #ff4d1f;
+}
+
+.concept-result-title .fa-fire,
+#conceptTitle .fa-fire {
+    color: #ff4d1f;
+}
+
+.concept-result-title .fa-bullseye,
+#conceptTitle .fa-bullseye {
+    color: #ff4d1f;
+}
+
+.concept-result-title .fa-triangle-exclamation,
+#conceptTitle .fa-triangle-exclamation {
+    color: #f6c945;
+}
+
+.concept-result-title .fa-thumbs-down,
+#conceptTitle .fa-thumbs-down {
+    color: #ff4d1f;
+}
+
+.concept-result-title .fa-droplet,
+#conceptTitle .fa-droplet {
+    color: #3e7fff;
+}
+
+.admin-form .primary-btn {
+    background-color: #1e9cc7;
+}
+
+.admin-form .primary-btn:hover {
+    background-color: #1790b8;
 }

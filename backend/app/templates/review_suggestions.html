@@ -5,6 +5,8 @@
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review idiom suggestions</title>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -21,12 +23,16 @@
             <a href="/heart-sayings/concepts">Concepts</a>
             <a href="/heart-sayings/project">Project</a>
             <a href="/heart-sayings/help">Help</a>
-            <a href="/heart-sayings/admin/idioms">Manage Idioms</a>
-
             {% if admin_logged_in %}
-                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+                <a href="/heart-sayings/admin/logout" class="admin-link">
+                    Logout
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
             {% else %}
-                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+                <a href="/heart-sayings/admin/login" class="admin-link">
+                    Admin
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
             {% endif %}
         </nav>
     </div>
@@ -34,7 +40,7 @@
     <div class="navbar-red-line"></div>
 </header>
 
-    <div class="page">
+    <div class="page admin-page">
         <h1>Pending idiom suggestions</h1>
 
         <p class="hint">
@@ -96,10 +102,10 @@
                             <td class="small-text">{{ s[11] }}</td>
                             <td>
                                 <a href="/heart-sayings/admin/approve/{{ s[0] }}" class="action-approve">
-                                    Approve
+                                    ✓ Approve
                                 </a>
                                 <a href="/heart-sayings/admin/reject/{{ s[0] }}" class="action-reject">
-                                    Reject
+                                    ✕ Reject
                                 </a>
                             </td>
                             <td>
@@ -114,8 +120,8 @@
                                 {% endif %}
                             </td>
                             <td>{{ s[8] or "—" }}</td>
-<td>{{ s[9] or "—" }}</td>
-<td>{{ "Yes" if s[10] else "No" }}</td>
+                            <td>{{ s[9] or "—" }}</td>
+                            <td>{{ "Yes" if s[10] else "No" }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -123,9 +129,17 @@
             </div>
         {% endif %}
 
-        <p style="margin-top:16px;">
-            <a href="/heart-sayings">&larr; Back to overview</a>
-        </p>
+        <p class="admin-actions">
+    <a href="/heart-sayings" class="back-home-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to overview
+    </a>
+
+    <a href="/heart-sayings/admin/idioms" class="admin-primary-btn">
+        <i class="fa-solid fa-pen-to-square"></i>
+        Manage idioms
+    </a>
+</p>
     </div>
 </body>
 </html>

@@ -26,18 +26,23 @@
             <a href="/heart-sayings/concepts">Concepts</a>
             <a href="/heart-sayings/project">Project</a>
             <a href="/heart-sayings/help">Help</a>
-
-            {% if admin_logged_in %}
-                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
-            {% else %}
-                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
-            {% endif %}
+              {% if admin_logged_in %}
+                <a href="/heart-sayings/admin/logout" class="admin-link">
+                    Logout
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+              {% else %}
+                <a href="/heart-sayings/admin/login" class="admin-link">
+                    Admin
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+              {% endif %}
         </nav>
     </div>
     <div class="navbar-red-line"></div>
 </header>
-  <div class="page">
-    <h1>Find idioms and expressions in different languages with the word HEART</h1>
+<div class="page app-panel index-page">
+      <h1>Find idioms and expressions in different languages with the word HEART</h1>
 
     <div class="controls">
       <!-- Removed inline onchange handler; JS will bind event listener -->
@@ -55,11 +60,11 @@
 
     <br>
     <!-- add alert message for clicked idioms that does not have concept_id -->
-       <div id="infoMessage" class="info-message" style="display:none;"></div>
+      <div id="infoMessage" class="info-message" style="display:none;"></div>
 
     <div id="idiomsSection">
-      <p id="clickHint" class="rolling" style="display:none;">
-        💡 Click an idiom to see related expressions across languages.
+      <p id="clickHint" class="hint"style="display:none;">
+        💡 Click an idiom to see related expressions across languages
       </p>
 
       <div class="idioms-carousel">

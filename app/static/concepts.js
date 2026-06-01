@@ -1,5 +1,14 @@
 let selectedConceptId = null;
 
+const conceptIcons = {
+    "Kind-hearted": "fa-solid fa-heart",
+    "Emotion / Strong feelings": "fa-solid fa-fire",
+    "Honesty / Openness": "fa-solid fa-bullseye",
+    "Fear / Nervousness": "fa-solid fa-triangle-exclamation",
+    "Disinterest / Boredom": "fa-solid fa-thumbs-down",
+    "Sadness / Melancholy": "fa-solid fa-droplet"
+};
+
 function getAllIdioms() {
     return window.ALL_IDIOMS || [];
 }
@@ -45,11 +54,14 @@ function renderConceptCards() {
         const card = document.createElement("div");
         card.className = "concept-card";
         card.dataset.conceptId = c.id;
+        const iconClass = conceptIcons[c.description] || "fa-solid fa-circle";
 
         card.innerHTML = `
-            <div class="concept-title">${c.description || ""}</div>
-            <div class="concept-sub">Click to view idioms across languages</div>
-        `;
+        <div class="concept-row">
+            <i class="${iconClass}"></i>
+            <span>${c.description}</span>
+        </div>
+    `;
 
         card.addEventListener("click", () => {
             console.log("Concept card clicked:", c);
@@ -61,12 +73,29 @@ function renderConceptCards() {
     });
 }
 
+function getConceptIcon(conceptName) {
+    const icons = {
+        "Kind-hearted": "❤️",
+        "Emotion / Strong feelings": "🔥",
+        "Honesty / Openness": "🎯",
+        "Fear / Nervousness": "⚠️",
+        "Sadness / Melancholy": "💧",
+        "Disinterest / Boredom": "👎"
+    };
+
+    return icons[conceptName] || "💡";
+}
+
 function openConceptResults() {
     console.log("openConceptResults selectedConceptId:", selectedConceptId);
 
     const overview = document.getElementById("conceptOverview");
     const results = document.getElementById("conceptResultsView");
+    const pageTitle = document.querySelector(".concepts-page h1");
+    const pageHint = document.querySelector(".concepts-page .hint");
 
+    if (pageTitle) pageTitle.style.display = "none";
+    if (pageHint) pageHint.style.display = "none";
     if (!overview) console.error("conceptOverview element not found");
     if (!results) console.error("conceptResultsView element not found");
 
@@ -83,6 +112,12 @@ function backToConcepts() {
     const searchEl = document.getElementById("conceptSearch");
     const langSel = document.getElementById("languageFilter");
     const grid = document.getElementById("conceptIdiomsGrid");
+
+    const pageTitle = document.querySelector(".concepts-page h1");
+    const pageHint = document.querySelector(".concepts-page .hint");
+
+    if (pageTitle) pageTitle.style.display = "block";
+    if (pageHint) pageHint.style.display = "block";
 
     selectedConceptId = null;
 
@@ -178,11 +213,16 @@ function renderConceptResults() {
     const conceptObj = concepts.find(c => Number(c.id) === Number(selectedConceptId));
 
     if (title) {
-        title.textContent = conceptObj
-            ? conceptObj.description
-            : `Concept ${selectedConceptId}`;
-    }
+        const conceptName = conceptObj ? conceptObj.description : `Concept ${selectedConceptId}`;
+        const iconClass = conceptObj ? conceptIcons[conceptObj.description] : "fa-solid fa-circle";
 
+        title.innerHTML = `
+        <span class="concept-result-title">
+            <i class="${iconClass}"></i>
+            <span>${conceptName}</span>
+        </span>
+    `;
+    }
     if (meta) {
         meta.textContent = "Filter by language or search within this concept.";
     }

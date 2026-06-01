@@ -93,11 +93,13 @@ CREATE TABLE IF NOT EXISTS concepts (
     description VARCHAR(225) NOT NULL
 ) DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO concepts (description) VALUES
-('💗 Kind-hearted'),
-('🔥 Emotion / strong feelings'),
-('🎯 Honesty / openness'),
-('⚠️ Fear / nervousness')
+INSERT INTO concepts (id, description) VALUES
+(1, 'Kind-hearted'),
+(2, 'Emotion / Strong feelings'),
+(3, 'Honesty / Openness'),
+(4, 'Fear / Nervousness'),
+(5, 'Disinterest / Boredom'),
+(6, 'Sadness / Melancholy')
 ON DUPLICATE KEY UPDATE description = VALUES(description);
 
 UPDATE idioms

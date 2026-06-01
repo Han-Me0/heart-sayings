@@ -1,7 +1,7 @@
 /* ===== script.js (main list + carousel) ===== */
 
 function getCardsPerPage() {
-    return window.matchMedia("(max-width: 800px)").matches ? 2 : 4;
+    return window.matchMedia("(max-width: 800px)").matches ? 2 : 6;
 }
 
 function addSwipeSupport(el, onSwipe) {
@@ -124,6 +124,8 @@ function showSameConceptIdioms(conceptId, conceptDescription, clickedIdiom) {
     const conceptGrid = document.getElementById("conceptGrid");
     const idiomsSection = document.getElementById("idiomsSection");
     const backBtn = document.getElementById("backToListBtn");
+    const pageTitle = document.querySelector(".concepts-page h1");
+    const pageHint = document.querySelector(".concepts-page .hint");
 
     if (!container || !title || !desc || !conceptGrid) {
         console.error("Concept results DOM missing.");
@@ -156,10 +158,10 @@ function showSameConceptIdioms(conceptId, conceptDescription, clickedIdiom) {
     const finalList = clickedFirst.concat(others);
 
     title.textContent = "Idioms with the same meaning in different languages";
-    desc.textContent =
+    desc.innerHTML =
         conceptDescription && String(conceptDescription).trim().length > 0
-            ? `Concept: ${conceptDescription}`
-            : `Concept ID: ${cid}`;
+            ? `<span class="concept-title-badge">${conceptDescription}</span>`
+            : `<span class="concept-title-badge">Concept ID: ${cid}</span>`;
 
     conceptGrid.innerHTML = "";
     finalList.forEach(item => conceptGrid.appendChild(renderConceptCard(item, clickedIdiom)));
@@ -188,65 +190,32 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderIdiomsCarousel(idiomList) {
     const track = document.getElementById("idiomsTrack");
     const dots = document.getElementById("idiomsDots");
-    const viewport = document.getElementById("idiomsViewport");
 
-    if (!track || !dots) {
-        console.error("Carousel DOM missing: #idiomsTrack / #idiomsDots not found.");
+    if (!track) {
+        console.error("#idiomsTrack not found.");
         return;
     }
 
     const list = Array.isArray(idiomList) ? idiomList : [];
+
     track.innerHTML = "";
-    dots.innerHTML = "";
 
-    if (list.length === 0) return;
-
-    const cardsPerPage = getCardsPerPage();
-
-    // chunk into pages
-    const pages = [];
-    for (let i = 0; i < list.length; i += cardsPerPage) {
-        pages.push(list.slice(i, i + cardsPerPage));
+    if (dots) {
+        dots.innerHTML = "";
+        dots.style.display = "none";
     }
 
-    let currentPage = 0;
+    track.style.transform = "none";
 
-    function updateDots() {
-        [...dots.children].forEach((d, i) => d.classList.toggle("is-active", i === currentPage));
+    if (list.length === 0) {
+        return;
     }
 
-    function goToPage(i) {
-        currentPage = Math.max(0, Math.min(i, pages.length - 1));
-        track.style.transform = `translateX(${-currentPage * 100}%)`;
-        updateDots();
-    }
+    track.className = "idioms-page-grid";
 
-    pages.forEach((pageIdioms, pageIndex) => {
-        const page = document.createElement("div");
-        page.className = "idioms-page";
-
-        const grid = document.createElement("div");
-        grid.className = "idioms-page-grid";
-
-        pageIdioms.forEach(idiom => grid.appendChild(renderCard(idiom)));
-
-        page.appendChild(grid);
-        track.appendChild(page);
-
-        const dot = document.createElement("button");
-        dot.type = "button";
-        dot.className = "idioms-dot" + (pageIndex === 0 ? " is-active" : "");
-        dot.setAttribute("aria-label", `Go to page ${pageIndex + 1}`);
-        dot.addEventListener("click", () => goToPage(pageIndex));
-        dots.appendChild(dot);
+    list.forEach(idiom => {
+        track.appendChild(renderCard(idiom));
     });
-
-    addSwipeSupport(viewport, (dir) => {
-        if (dir === "left") goToPage(currentPage + 1);
-        if (dir === "right") goToPage(currentPage - 1);
-    });
-
-    goToPage(0);
 }
 
 function filterIdioms(allIdioms, languageFilter, searchTerm) {
@@ -322,7 +291,7 @@ function init() {
             last = now;
             const lang = languageSelector ? languageSelector.value : "none";
             const term = searchBar ? (searchBar.value || "").toLowerCase().trim() : "";
-            loadIdioms(lang, term); F
+            loadIdioms(lang, term);
         }
     }, { passive: true });
 

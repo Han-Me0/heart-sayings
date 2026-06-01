@@ -5,6 +5,7 @@
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concepts – Heart sayings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -23,24 +24,34 @@
             <a href="/heart-sayings/help">Help</a>
 
             {% if admin_logged_in %}
-                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
-            {% else %}
-                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
-            {% endif %}
+                <a href="/heart-sayings/admin/logout" class="admin-link">
+                    Logout
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+              {% else %}
+                <a href="/heart-sayings/admin/login" class="admin-link">
+                    Admin
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+              {% endif %}
         </nav>
     </div>
     <div class="navbar-red-line"></div>
 </header>
 
-<div class="page">
-  <h1>Concepts Overview</h1>
-  <p class="hint">Select a concept to see idioms across languages.</p>
+<div class="page concepts-page">
+  <h1>Concept Overview</h1>
+<p class="hint">Select a concept to see idioms across languages.</p>
 
   <!-- OVERVIEW MODE -->
   <section id="conceptOverview">
     <div class="concepts-center">
       <div id="conceptCards" class="concept-cards"></div>
     </div>
+    <a href="/heart-sayings" class="back-home-btn">
+      <i class="fa-solid fa-arrow-left"></i>
+      Back to home
+    </a>
   </section>
 
   <!-- RESULTS MODE -->
@@ -65,12 +76,9 @@
     <div id="conceptIdiomsGrid" class="idiom-grid"></div>
 
     <div style="margin-top:20px;">
-        <button 
-            id="backToConceptsBtn" 
-            class="secondary-btn" 
-            type="button"
-        >
-            ← Back to concepts
+        <button id="backToListBtn" class="back-home-btn" type="button" style="display:none;">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to idioms
         </button>
     </div>
 

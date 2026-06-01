@@ -78,6 +78,8 @@ INSERT INTO idioms.idioms (language,idiom,meaning,idiom_translation,meaning_tran
 	 ('Ukrainian','Покласти руку на серце','Щиро, відверто.','To put your hand on your heart','To be honest and sincere.'),
 	 ('Swedish','Ha ett brustet hjärta','Vara mycket olycklig; ha ett krossat hjärta.','To have a broken heart.','To be very unhappy caused by the ending of a romantic relationship or the death of a loved one'),
 	 ('Arabic','البعيد عن العين بعيد عن القلب','When someone is absent for a long time, they are thought about less or missed less.','Out of sight, out of mind','Absence can weaken emotional attachment over time.'),
+	 ('Arabic','قلبٌ من حجر','يشير هذا التعبير إلى شخص قاسٍ أو غير متعاطف، لا تتأثر مشاعره بسهولة؛ وهو ينطوي على دلالة البرود العاطفي أو الجمود في السلوك','A heart of stone','This expression refers to a tough or unsympathetic person whose feelings are not easily affected. It implies emotional coldness or stiffness in behavior.'),
+
 ON DUPLICATE KEY UPDATE
 idiom_translation = VALUES(idiom_translation),
 meaning_translation = VALUES(meaning_translation);
