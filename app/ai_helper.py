@@ -65,6 +65,29 @@ def suggest_concept_from_text(idiom: str, meaning: str):
             "keywords": ["fear", "nervous", "scared", "afraid", "anxious", "panic", "terrified"],
             "reason": "The idiom relates to fear, tension, or nervousness."
         },
+        "Sadness / melancholy": {
+        "keywords": [
+            "sad", "melancholy", "sorrow", "lonely", "depressed",
+            "despair", "gloom", "grief", "mourning", "heartache"
+        ],
+        "reason": "The idiom expresses sadness, melancholy, or emotional suffering."
+        },
+    
+        "Boredom / indifference": {
+            "keywords": [
+                "bored", "boring", "indifferent", "uninterested",
+                "apathetic", "tired", "weary", "detached"
+            ],
+            "reason": "The idiom suggests boredom, indifference, or lack of interest."
+        },
+    
+        "Love / affection": {
+            "keywords": [
+                "love", "romance", "affection", "beloved",
+                "passion", "adore", "devotion"
+            ],
+            "reason": "The idiom expresses love, affection, or romantic attachment."
+        }
     }
 
     scores = {}

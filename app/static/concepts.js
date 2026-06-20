@@ -162,11 +162,12 @@ function renderIdiomCard(i) {
             <div class="lang-badge">${i.language || ""}</div>
         </div>
 
-        <div class="idiom-meaning">${i.meaning || ""}</div>
+        
 
         <div class="idiom-meta">
-            <div><b>Idiom:</b> ${i.idiom_translation || "n/a"}</div>
-            <div><b>Meaning:</b> ${i.meaning_translation || "n/a"}</div>
+            <div class="meta-item">${i.meaning || ""}</div>
+            <div class="meta-item"><b>Idiom:</b> ${i.idiom_translation || "n/a"}</div>
+            <div class="meta-item"><b>Meaning:</b> ${i.meaning_translation || "n/a"}</div>
         </div>
     `;
 

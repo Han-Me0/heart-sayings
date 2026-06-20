@@ -7,6 +7,7 @@
     <title>Suggest a New Idiom</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="{{ url_for('static', filename='suggest.js') }}"></script>
 </head>
 <body>
     <header class="site-header">
@@ -20,13 +21,12 @@
         <nav class="navigation">
             <a href="/heart-sayings">Home</a>
             <a href="/heart-sayings/concepts">Concepts</a>
-            <a href="/heart-sayings/project">Project</a>
             <a href="/heart-sayings/help">Help</a>
 
             {% if admin_logged_in %}
-                <a href="/heart-sayings/admin/logout" class="admin-link">Logout</a>
+                <a href="/heart-sayings/admin/logout" class="admin-link">Logout <i class="fa-solid fa-circle-user"></i></a>
             {% else %}
-                <a href="/heart-sayings/admin/login" class="admin-link">Admin</a>
+                <a href="/heart-sayings/admin/login" class="admin-link">Admin <i class="fa-solid fa-circle-user"></i></a>
             {% endif %}
         </nav>
     </div>

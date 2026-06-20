@@ -32,28 +32,23 @@ function addSwipeSupport(el, onSwipe) {
 function renderCard(idiom) {
     const card = document.createElement("div");
     card.className = "idiom-card";
-
     card.dataset.conceptId = idiom.concept_id ?? "";
     card.dataset.conceptDescription = idiom.concept_description ?? "";
-
     card.innerHTML = `
     <div class="idiom-top">
-      <div class="idiom-title">
+    <div class="idiom-title">
         <span class="idiom-ribbon">
-          <span class="idiom-ribbon__text">${idiom.idiom || ""}</span>
+        <span class="idiom-ribbon__text">${idiom.idiom || ""}</span>
         </span>
-      </div>
-      <div class="lang-badge">${idiom.language || ""}</div>
     </div>
-
-    <div class="idiom-meaning">${idiom.meaning || ""}</div>
-
+    <div class="lang-badge">${idiom.language || ""}</div>
+    </div>
     <div class="idiom-meta">
-      <div><b>Idiom:</b> ${idiom.idiom_translation || ""}</div>
-      <div><b>Meaning:</b> ${idiom.meaning_translation || ""}</div>
+    <div class="meta-item"><b>Idiom meaning:</b> ${idiom.meaning || ""}</div>
+    <div class="meta-item"><b>Idiom translation:</b> ${idiom.idiom_translation || ""}</div>
+    <div class="meta-item"><b>Meaning translation:</b> ${idiom.meaning_translation || ""}</div>
     </div>
-  `;
-
+    `;
     card.addEventListener("click", () => {
         const conceptId = card.dataset.conceptId ? parseInt(card.dataset.conceptId, 10) : null;
         if (conceptId === null || isNaN(conceptId)) {
@@ -65,7 +60,6 @@ function renderCard(idiom) {
             showSameConceptIdioms(conceptId, card.dataset.conceptDescription, idiom);
         }
     });
-
     return card;
 }
 

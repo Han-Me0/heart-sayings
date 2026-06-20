@@ -573,10 +573,10 @@ select {
 }
 
 #clickHint {
-    color: #333;
-    font-size: 1.3rem;
+    color: #8a8a8a;
+    font-size: 1.1rem;
     margin-bottom: 10px;
-    font-style: arial, sans-serif;
+    font-family: italic;
 }
 
 
@@ -633,15 +633,6 @@ select {
     line-height: 1.2;
 }
 
-/* wrapper: holds the fold pieces */
-.idiom-ribbon {
-    position: absolute;
-    left: -14px;
-    top: -5px;
-    z-index: 3;
-    display: inline-block;
-}
-
 /* main ribbon block */
 .idiom-ribbon__text {
     display: inline-block;
@@ -652,49 +643,42 @@ select {
     letter-spacing: .06em;
     text-transform: uppercase;
     line-height: 1;
-
     padding: 8px 18px 8px 18px;
-
-    /* keep right side square */
     border-radius: 0;
     box-shadow: 0 1px 0 rgba(0, 0, 0, .10);
 }
 
-/* BIG left triangle "ear" (slightly dropped down) */
+/* wrapper: holds the fold pieces */
+.idiom-ribbon {
+    position: absolute;
+    left: -14px;
+    top: -5px;
+    z-index: 3;
+    display: inline-block;
+}
+
+/* BIG left triangle (slightly dropped down) */
 .idiom-ribbon::before {
     content: "";
     position: absolute;
-
-    /* stick out to the left and drop down a bit */
-    left: -17px;
     top: -1px;
-
     width: 0;
     height: 0;
-
-    /* big triangle */
     border-top: 28px solid transparent;
     border-bottom: 25px solid transparent;
     border-right: 18px solid #1e9cc7;
-    /* close to ribbon bottom tone */
 }
 
 /* small darker shadow triangle underneath (fold) */
 .idiom-ribbon::after {
     content: "";
     position: absolute;
-
     left: -18px;
     top: 28px;
-    /* aligns under the ear; tweak 30–34px to match your font/padding */
-
     width: 0;
     height: 0;
-
     border-top: 24px solid #0f6f8e;
-    /* darker fold */
     border-left: 19px solid transparent;
-    /* makes the diagonal */
 }
 
 /* Concepts page */
@@ -980,18 +964,18 @@ select {
     white-space: nowrap;
 }
 
-.idiom-meaning {
-    color: var(--text);
-    margin: 6px 0 8px;
+.idiom-meta {
+    color: #2f373a;
+    font-size: 0.9rem;
+    text-align: left;
 }
 
-.idiom-meta {
-    color: var(--muted);
-    font-size: 0.9rem;
+.meta-item {
+    margin: 15px;
 }
 
 .idiom-meta b {
-    color: var(--text);
+    color: #a0a0a0;
     font-weight: 600;
 }
 
@@ -1268,14 +1252,12 @@ body {
     font-family: "Georgia", serif;
 }
 
-/* Navbar like deployed mockup */
-
 .site-header {
     background: #ffffff;
 }
 
 .navbar {
-    min-height: 120px;
+    min-height: 100px;
     display: grid;
     grid-template-columns: 220px 1fr 260px;
     align-items: center;
@@ -1328,7 +1310,7 @@ body {
 }
 
 .navbar-red-line {
-    height: 4px;
+    height: 2px;
     background: linear-gradient(to right, #a70049, #ff6b6b);
     width: 100%;
 }
@@ -1341,7 +1323,7 @@ body {
     display: inline;
     margin-left: 0;
     font-size: 0.95em;
-    color: #4a4f51;
+    color: #686868;
 }
 
 .fa-solid,
@@ -1793,4 +1775,53 @@ body {
 
 .admin-form .primary-btn:hover {
     background-color: #1790b8;
+}
+
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    color: #4a4f51;
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        grid-template-columns: auto 1fr auto;
+        min-height: 90px;
+        padding: 0 20px;
+        gap: 12px;
+    }
+
+    #logo {
+        width: 95px;
+    }
+
+    .navbar-title {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .hamburger-btn {
+        display: block;
+    }
+
+    .navigation {
+        display: none;
+        grid-column: 1 / -1;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 0 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .navigation.is-open {
+        display: flex;
+    }
+
+    .navigation a {
+        font-size: 1rem;
+    }
 }

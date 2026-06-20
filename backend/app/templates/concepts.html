@@ -17,7 +17,9 @@
         </div>
 
         <h2 class="navbar-title">Heart sayings</h2>
-
+<button class="hamburger-btn" type="button" aria-label="Toggle navigation">
+    <i class="fa-solid fa-bars"></i>
+</button>
         <nav class="navigation">
             <a href="/heart-sayings">Home</a>
             <a href="/heart-sayings/project">Project</a>
@@ -26,12 +28,12 @@
             {% if admin_logged_in %}
                 <a href="/heart-sayings/admin/logout" class="admin-link">
                     Logout
-                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <i class="fa-solid fa-circle-user"></i>
                 </a>
               {% else %}
                 <a href="/heart-sayings/admin/login" class="admin-link">
                     Admin
-                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <i class="fa-solid fa-circle-user"></i>
                 </a>
               {% endif %}
         </nav>
@@ -91,6 +93,18 @@
 </script>
 <script defer src="{{ url_for('static', filename='concepts.js') }}"></script>
 
+<script src="../static/script.js" defer></script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const button = document.querySelector(".hamburger-btn");
+    const nav = document.querySelector(".navigation");
 
+    if (!button || !nav) return;
+
+    button.addEventListener("click", function () {
+        nav.classList.toggle("is-open");
+    });
+});
+</script>
 </body>
 </html>
