@@ -1,5 +1,4 @@
 # from flask import Blueprint, render_template
-# from flask import render_template
 # from .repository import get_all_ideoms
 
 # bp = Blueprint('main', __name__)
@@ -84,7 +83,7 @@ def concepts_overview():
     return render_template("concepts.html", concepts=concepts, idioms=idioms)
 
 # User suggestion
-@bp.route("/heart-sayings/suggest", methods=["GET","POST"])
+@bp.route("/heart-sayings/suggest", methods=["GET", "POST"])
 def suggest():
     if request.method == "POST":
         language = request.form.get("language", "").strip()
@@ -92,28 +91,26 @@ def suggest():
         meaning = request.form.get("meaning", "").strip()
         idiom_translation = request.form.get("idiom_translation", "").strip()
         meaning_translation = request.form.get("meaning_translation", "").strip()
-
-        # text from frontend AI suggestion
         suggested_concept = request.form.get("suggested_concept", "").strip()
 
-        # final DB value 
-        concept_id= None
+        concept_id = None
         submitted_by_name = request.form.get("submitted_by_name", "").strip()
         submitted_by_email = request.form.get("submitted_by_email", "").strip()
         notify_user = request.form.get("notify_user") == "1"
-        # AI auto-suggestion if frontend didn't provide one
+
+        if not language or not idiom or not meaning:
+            return render_template(
+                "suggest.html",
+                error="Language, idiom, and meaning are required.",
+                concepts=get_all_concepts()
+            )
+
         if not suggested_concept:
             ai_result = suggest_concept_from_text(idiom, meaning)
             suggested_concept = ai_result["suggested_concept"]
 
-        # convert concept text -> concept.id
         if suggested_concept:
             concept_id = get_concept_id_by_description(suggested_concept)
-
-        # validation
-        if not language or not idiom or not meaning:
-            error = "Language, idiom, and meaning are required."
-            return render_template("suggest.html", error=error, concepts=get_all_concepts())
 
         insert_suggestion(
             language,
@@ -121,16 +118,19 @@ def suggest():
             meaning,
             idiom_translation,
             meaning_translation,
-            concept_id,   # THIS is the key change for ai assistant
+            concept_id,
             submitted_by_name,
             submitted_by_email,
             notify_user
         )
 
-        return render_template("suggest_success.html")
-    
-    concepts = get_all_concepts()
-    return render_template("suggest.html", concepts=concepts)
+        return redirect(url_for("main.suggest_success"))
+
+    return render_template("suggest.html", concepts=get_all_concepts())
+
+@bp.route("/heart-sayings/suggest/success")
+def suggest_success():
+    return render_template("suggest_success.html")
 
 @bp.route('/heart-sayings/admin/suggestions', methods=['GET'])
 def review_suggestions():
@@ -224,7 +224,7 @@ def edit_idiom_route(idiom_id):
         return redirect("/heart-sayings/admin/idioms")
 
     return render_template(
-        "edit_idiom.html",
+        "edit_idioms.html",
         idiom_data=idiom_data,
         concepts=concepts,
         admin_logged_in=session.get("admin_logged_in")

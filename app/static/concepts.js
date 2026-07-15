@@ -103,6 +103,7 @@ function openConceptResults() {
     if (results) results.style.display = "block";
 
     fillLanguageDropdownForSelected();
+    document.getElementById("backToListBtn").style.display = "inline-flex";
     renderConceptResults();
 }
 
@@ -127,6 +128,9 @@ function backToConcepts() {
 
     if (results) results.style.display = "none";
     if (overview) overview.style.display = "block";
+
+    document.getElementById("backToListBtn").style.display = "none";
+
 }
 
 function fillLanguageDropdownForSelected() {
@@ -207,10 +211,6 @@ function renderConceptResults() {
     const concepts = getAllConcepts();
     const idioms = getAllIdioms();
 
-    console.log("renderConceptResults selectedConceptId:", selectedConceptId);
-    console.log("ALL_CONCEPTS:", concepts);
-    console.log("ALL_IDIOMS:", idioms);
-
     const conceptObj = concepts.find(c => Number(c.id) === Number(selectedConceptId));
 
     if (title) {
@@ -261,15 +261,11 @@ function renderConceptResults() {
 }
 
 function initConceptPage() {
-    console.log("initConceptPage running");
-    console.log("window.ALL_CONCEPTS:", window.ALL_CONCEPTS);
-    console.log("window.ALL_IDIOMS:", window.ALL_IDIOMS);
-
     renderConceptCards();
 
     const langSel = document.getElementById("languageFilter");
     const searchEl = document.getElementById("conceptSearch");
-    const backBtn = document.getElementById("backToConceptsBtn");
+    const backBtn = document.getElementById("backToListBtn");
 
     if (langSel) langSel.addEventListener("change", renderConceptResults);
     if (searchEl) searchEl.addEventListener("input", renderConceptResults);

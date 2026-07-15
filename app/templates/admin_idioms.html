@@ -2,25 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Manage Idioms</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review idiom suggestions</title>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
-<header class="site-header">
+    <header class="site-header">
     <div class="navbar">
         <div class="navbar-logo">
-            <img id="logo"
-                 src="{{ url_for('static', filename='img/logo.png') }}"
-                 alt="logo">
+            <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}" alt="logo JGU">
         </div>
 
         <h2 class="navbar-title">Heart sayings</h2>
 
+        <button class="hamburger-btn" type="button" aria-label="Toggle navigation">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
         <nav class="navigation">
             <a href="/heart-sayings">Home</a>
-            <a href="/heart-sayings/admin/suggestions">Suggestions</a>
-            <a href="/heart-sayings/admin/logout">Logout</a>
+            <a href="/heart-sayings/concepts">Concepts</a>
+            {% if admin_logged_in %}
+                <a href="/heart-sayings/admin/logout" class="admin-link">
+                    Logout
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            {% else %}
+                <a href="/heart-sayings/admin/login" class="admin-link">
+                    Admin
+                    <i class="fa-solid fa-circle-user"></i>
+                </a>
+            {% endif %}
         </nav>
     </div>
 

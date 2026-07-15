@@ -17,7 +17,9 @@
         </div>
 
         <h2 class="navbar-title">Heart sayings</h2>
-
+<button class="hamburger-btn" type="button" aria-label="Toggle navigation">
+    <i class="fa-solid fa-bars"></i>
+</button>
         <nav class="navigation">
             <a href="/heart-sayings">Home</a>
             <a href="/heart-sayings/concepts">Concepts</a>
@@ -39,7 +41,7 @@
             <div class="error">{{ error }}</div>
         {% endif %}
 
-        <form method="post" class="suggest-form">
+        <form id="suggestionForm" method="post" class="suggest-form">
           <h1>Suggest a New Idiom</h1>
 
         <p class="hint">
@@ -119,5 +121,29 @@
             <a href="/heart-sayings">&larr; Back to overview</a>
         </p>
     </div>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const button = document.querySelector(".hamburger-btn");
+    const nav = document.querySelector(".navigation");
+    const form = document.getElementById("suggestionForm");
+
+    if (button && nav) {
+        button.addEventListener("click", function () {
+            nav.classList.toggle("is-open");
+        });
+    }
+
+    if (form) {
+        form.addEventListener("submit", function () {
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = "Submitting...";
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>
