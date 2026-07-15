@@ -39,6 +39,15 @@ h1 {
     /* Deep red text */
 }
 
+.app-panel {
+    max-width: 1050px;
+    margin: 55px auto 80px;
+    background: #ffffff;
+    padding: 45px 42px 55px;
+    box-sizing: border-box;
+    box-shadow: 0 14px 32px rgba(80, 80, 80, 0.08);
+}
+
 .red-select:focus {
     outline: none;
 }
@@ -583,7 +592,7 @@ select {
 
 .concepts-page {
     max-width: 1050px;
-    margin: 55px auto 80px;
+    margin: 2px auto 80px;
     background: #ffffff;
     min-height: 470px;
     padding: 55px 40px 60px;
@@ -602,32 +611,6 @@ select {
     color: #333;
     font-size: 0.95rem;
     margin-bottom: 32px;
-}
-
-/* mobile */
-@media (max-width: 650px) {
-    .concept-cards {
-        grid-template-columns: minmax(240px, 280px);
-        gap: 18px;
-    }
-
-    .concept-card {
-        min-height: 86px;
-    }
-
-    .concept-row {
-        grid-template-columns: 38px 1fr;
-        column-gap: 12px;
-    }
-
-    .concept-row i {
-        width: 38px;
-        font-size: 27px;
-    }
-
-    .concept-row span {
-        font-size: 0.98rem;
-    }
 }
 
 /* FINAL concepts page card layout */
@@ -688,8 +671,18 @@ select {
 
 /* mobile */
 @media (max-width: 650px) {
+
+    .app-panel {
+        margin: 2px auto 80px;
+    }
+
+    .concept-row span {
+        font-size: 0.98rem;
+    }
+
     .concepts-page {
         padding: 50px 20px;
+        margin: 2px auto 80px;
     }
 
     .concept-cards {
@@ -1064,6 +1057,7 @@ body {
         gap: 16px;
         padding: 24px 20px;
         text-align: center;
+        background-color: #f0f3f0;
     }
 
     .navbar-logo {
@@ -1088,15 +1082,6 @@ body {
 /* =========================
    Final unified page polish
    ========================= */
-
-.app-panel {
-    max-width: 1050px;
-    margin: 55px auto 80px;
-    background: #ffffff;
-    padding: 45px 42px 55px;
-    box-sizing: border-box;
-    box-shadow: 0 14px 32px rgba(80, 80, 80, 0.08);
-}
 
 .index-page h1 {
     margin: 20px auto 35px;
