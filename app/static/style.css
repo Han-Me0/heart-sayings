@@ -7,60 +7,11 @@ body {
     background: #F4F4F4;
 }
 
-.page {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 16px;
-}
-
-
-.v-toolbar__content {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 8px 0;
-    border-bottom: 2px solid rgb(64, 64, 168);
-    /* your JGU red maybe */
-}
-
-.navigation a {
-    margin-left: 12px;
-    text-decoration: none;
-    color: #444;
-    font-weight: 500;
-}
-
-.navigation a:hover {
-    color: #cc0000;
-}
-
-.navigation a {
-    color: black;
-    padding: 14px 20px;
-    text-decoration: none;
-    text-align: center;
-    font-size: 1.3vw
-}
-
-.navigation a:hover {
-    background-color: #ddd;
-    color: #800000;
-}
-
-.v-spacer {
-    flex-grow: 1
-}
-
 hr {
     border: none;
     background-color: red;
     color: red;
     height: 2px;
-}
-
-.title {
-    margin-left: 10px;
-    font-size: 1.7vw
 }
 
 #logo {
@@ -76,11 +27,6 @@ h1 {
     font-weight: 600;
 }
 
-/* Controls Styling */
-.controls {
-    margin-bottom: 20px;
-}
-
 .red-select {
     padding: 10px;
     font-size: 16px;
@@ -94,19 +40,6 @@ h1 {
 }
 
 .red-select:focus {
-    outline: none;
-}
-
-#searchBar {
-    padding: 10px;
-    font-size: 16px;
-    width: 50%;
-    border: 2px solid #800000;
-    /* Deep red border */
-    color: #333;
-    /* Dark text */
-    background-color: #ffffff;
-    /* White background */
     outline: none;
 }
 
@@ -153,27 +86,21 @@ table tr:hover {
     padding: 10px;
 }
 
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 16px 0;
-}
-
 #languageSelector,
 #searchBar {
     padding: 8px 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
     font-size: 0.95rem;
+    flex: 1;
+}
+
+.index-page #searchBar {
+    max-width: 520px;
 }
 
 #languageSelector {
     min-width: 180px;
-}
-
-#searchBar {
-    flex: 1;
 }
 
 .suggestion-box {
@@ -245,26 +172,12 @@ table tr:hover {
     border-radius: 4px;
 }
 
-/* General page wrapper (reuse from index if you already have one) */
-.page {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px 16px 40px;
-}
-
-/* Suggest form styling */
-.suggest-form {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    background-color: #FFFFFF;
-}
-
 .form-row {
     display: flex;
     flex-direction: column;
     margin-bottom: 12px;
+    width: 85%;
+    margin: 0 auto 18px;
 }
 
 .form-row label {
@@ -278,22 +191,6 @@ table tr:hover {
     border-radius: 4px;
     border: 1px solid #ccc;
     font-size: 0.95rem;
-}
-
-/* Submit button */
-.primary-btn {
-    margin-top: 8px;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 4px;
-    background-color: #3e59a4a8;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.primary-btn:hover {
-    background-color: #122f81a8;
 }
 
 /* Error message */
@@ -430,55 +327,6 @@ table tr:hover {
 .admin-login-link a:hover {
     color: #c00;
     text-decoration: underline;
-}
-
-/* Two-column layout: left sidebar + right results */
-.concept-layout {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 24px;
-    align-items: start;
-}
-
-/* Sidebar holds filters + concept list */
-.concept-sidebar .controls {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-/* remove bullets */
-#conceptList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* make concept items look clickable */
-#conceptList li {
-    padding: 8px 10px;
-    margin-bottom: 6px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    cursor: pointer;
-    background: #fafafa;
-}
-
-#conceptList li:hover {
-    background: #fff0f0;
-}
-
-#conceptList li.active {
-    background: #8b0000;
-    color: white;
-    font-weight: 600;
-}
-
-@media (max-width: 900px) {
-    .concept-layout {
-        grid-template-columns: 1fr;
-    }
 }
 
 .admin-bar {
@@ -683,59 +531,6 @@ select {
 }
 
 /* Concepts page */
-.concept-cards {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(230px, 250px));
-    gap: 28px 34px;
-    justify-content: center;
-    align-items: stretch;
-    margin-top: 20px;
-}
-
-.concept-card {
-    width: 100%;
-    min-height: 92px;
-    background: #d9d9d9;
-    border: none;
-    border-radius: 4px;
-    box-shadow: none;
-    display: flex;
-    align-items: center;
-    padding: 0 22px;
-    box-sizing: border-box;
-    cursor: pointer;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.concept-row {
-    display: grid;
-    grid-template-columns: 42px 1fr;
-    align-items: center;
-    column-gap: 14px;
-    width: 100%;
-}
-
-.concept-row i {
-    width: 42px;
-    text-align: center;
-    font-size: 30px;
-    line-height: 1;
-}
-
-.concept-row span {
-    display: block;
-    text-align: left;
-    font-size: 1.02rem;
-    font-weight: 600;
-    line-height: 1.25;
-    color: #111;
-}
-
-.concept-card:hover {
-    background: #cfcfcf;
-    transform: translateY(-2px);
-}
-
 /* icon colors */
 .concept-card .fa-heart {
     color: #ff4d1f;
@@ -759,31 +554,6 @@ select {
 
 .concept-card .fa-droplet {
     color: #3e7fff;
-}
-
-.back-overview-btn {
-    background: #d7ebff;
-    color: #2c5f8f;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 18px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
-    margin-bottom: 20px;
-}
-
-.back-overview-btn:hover {
-    background: #c7e2fd;
-}
-
-.back-overview-btn i {
-    font-size: 0.85rem;
 }
 
 .back-home-btn {
@@ -918,12 +688,17 @@ select {
 
 /* mobile */
 @media (max-width: 650px) {
+    .concepts-page {
+        padding: 50px 20px;
+    }
+
     .concept-cards {
-        grid-template-columns: minmax(240px, 280px);
-        gap: 18px;
+        grid-template-columns: 1fr;
+        justify-items: center;
     }
 
     .concept-card {
+        width: 220px;
         min-height: 86px;
     }
 
@@ -939,20 +714,6 @@ select {
 
     .concept-row span {
         font-size: 0.98rem;
-    }
-}
-
-@media (max-width: 600px) {
-    .concepts-page {
-        padding: 50px 20px;
-    }
-
-    .concept-cards {
-        grid-template-columns: 1fr;
-    }
-
-    .concept-card {
-        width: 220px;
     }
 }
 
@@ -996,10 +757,6 @@ select {
     outline: 2px solid rgba(30, 156, 199, .35);
 }
 
-.idioms-carousel {
-    width: 100%;
-}
-
 .idioms-viewport {
     overflow: hidden;
     width: 100%;
@@ -1034,28 +791,6 @@ select {
     }
 }
 
-.idioms-dots {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 14px;
-}
-
-.idioms-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 999px;
-    border: 1px solid rgba(15, 23, 42, 0.25);
-    background: transparent;
-    cursor: pointer;
-    padding: 0;
-}
-
-.idioms-dot.is-active {
-    background: rgba(30, 156, 199, 0.95);
-    border-color: rgba(30, 156, 199, 0.95);
-}
-
 .empty-state-card {
     background: #fff;
     border: 1px solid var(--border);
@@ -1075,50 +810,6 @@ select {
     border-radius: 8px;
     text-align: center;
     font-size: 14px;
-}
-
-#ng-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-}
-
-.ng-modal {
-    background: white;
-    padding: 24px;
-    border-radius: 10px;
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
-}
-
-.ng-title {
-    font-size: 20px;
-    margin-bottom: 12px;
-}
-
-.ng-body {
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.ng-btn {
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.ng-btn.active {
-    background: #1D9E75;
-    color: white;
-}
-
-.ng-legal a {
-    font-size: 12px;
-    margin: 0 8px;
 }
 
 /* =========================
@@ -1179,11 +870,6 @@ body {
 .suggest-form select:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(222, 222, 222, 0.25);
-}
-
-.form-row {
-    width: 85%;
-    margin: 0 auto 18px;
 }
 
 .concept-line {
@@ -1314,10 +1000,6 @@ body {
     height: 2px;
     background: linear-gradient(to right, #a70049, #ff6b6b);
     width: 100%;
-}
-
-#red-line {
-    display: none;
 }
 
 .admin-link i {
@@ -1487,67 +1169,6 @@ body {
     padding: 22px 14px 18px;
 }
 
-/* No-carousel mode: keep JS structure, remove carousel clipping */
-.no-carousel .idioms-viewport,
-.no-carousel-viewport {
-    overflow: visible;
-    padding: 28px 0 26px;
-}
-
-.no-carousel .idioms-track,
-.no-carousel-track {
-    display: block;
-    transform: none !important;
-}
-
-.no-carousel .idioms-page {
-    width: 100%;
-    min-width: 100%;
-    padding: 0;
-}
-
-.no-carousel .idioms-page-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(320px, 1fr));
-    gap: 32px 36px;
-    overflow: visible;
-}
-
-.no-carousel .idioms-dots {
-    display: none;
-}
-
-.no-carousel .idiom-card {
-    overflow: visible;
-}
-
-/* Disable carousel and show normal grid */
-
-#idiomsTrack.idioms-page-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(320px, 1fr));
-    gap: 34px 38px;
-    overflow: visible;
-    margin-top: 32px;
-    padding-left: 28px;
-    padding-right: 10px;
-    box-sizing: border-box;
-}
-
-.idioms-dots {
-    display: none;
-}
-
-.idiom-card {
-    overflow: visible;
-}
-
-#conceptGrid.idiom-grid,
-#conceptIdiomsGrid.idiom-grid {
-    padding-left: 18px;
-    padding-right: 10px;
-    box-sizing: border-box;
-}
 
 #conceptResults {
     text-align: center;
@@ -1569,6 +1190,85 @@ body {
     color: #6b7280;
     font-size: 1rem;
     margin-bottom: 30px;
+}
+
+/* ==================================
+   Idiom grids
+   Old carousel names are retained
+   for compatibility with HTML and JS
+   ================================== */
+
+.idioms-carousel {
+    width: 100%;
+}
+
+.idioms-viewport {
+    width: 100%;
+    overflow: visible;
+    padding: 28px 0;
+    box-sizing: border-box;
+}
+
+.idioms-track {
+    width: 100%;
+    transform: none !important;
+}
+
+.idioms-page {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Main idiom grid */
+.idioms-page-grid,
+.idiom-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 32px;
+    width: 100%;
+    margin-top: 28px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Hide old carousel navigation */
+.idioms-dots,
+.idioms-dot {
+    display: none;
+}
+
+/* Cards fill both grid columns equally */
+.idioms-page-grid .idiom-card,
+.idiom-grid .idiom-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Concept result grids */
+#conceptGrid,
+#conceptIdiomsGrid,
+#idiomsTrack {
+    width: 100%;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+}
+
+/* Mobile: one card per row */
+@media (max-width: 800px) {
+
+    .idioms-page-grid,
+    .idiom-grid,
+    #conceptResultsView .idiom-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .idioms-viewport {
+        padding: 20px 0;
+    }
 }
 
 /*Admin review page*/
@@ -1831,10 +1531,6 @@ body {
         min-width: 200px;
         padding: 0 24px;
         font-size: 1.09rem;
-    }
-
-    #conceptIdiomsGrid.idiom-grid {
-        grid-template-columns: 1fr;
     }
 
     .concept-cards {
