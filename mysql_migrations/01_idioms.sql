@@ -1,17 +1,82 @@
-CREATE DATABASE IF NOT EXISTS idioms;
+-- =========================================================
+-- 001_idioms.sql
+-- Creates/migrates the idioms table and seeds the idiom data.
+-- MySQL 8+. Safe to run more than once.
+-- =========================================================
 
-USE idioms;
+SET NAMES utf8mb4;
 
 CREATE TABLE IF NOT EXISTS idioms (
-  language VARCHAR(255),
-  idiom VARCHAR(255),
-  meaning VARCHAR(255),
-  idiom_translation VARCHAR(255),
-  meaning_translation VARCHAR(255)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    language VARCHAR(255) NOT NULL,
+    idiom VARCHAR(255) NOT NULL,
+    meaning VARCHAR(255) NOT NULL,
+    idiom_translation VARCHAR(255) NULL,
+    meaning_translation VARCHAR(255) NULL,
+    CONSTRAINT uq_idioms_unique UNIQUE (language, idiom, meaning)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO idioms.idioms (language,idiom,meaning,idiom_translation,meaning_translation) VALUES
-	 ('English','Close to your heart','If something is close to your heart, you care a lot about it.','n/a','n/a'),
+ALTER TABLE idioms
+    CONVERT TO CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+DROP PROCEDURE IF EXISTS migrate_idioms_table;
+
+DELIMITER $$
+
+CREATE PROCEDURE migrate_idioms_table()
+BEGIN
+    /* Add an ID primary key to older versions of the table. */
+    IF NOT EXISTS (
+        SELECT 1
+        FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'idioms'
+          AND COLUMN_NAME = 'id'
+    ) THEN
+        ALTER TABLE idioms
+            ADD COLUMN id INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+    END IF;
+
+    /* Remove exact duplicate rows before creating the unique index. */
+    DELETE duplicate_row
+    FROM idioms AS duplicate_row
+    JOIN idioms AS keep_row
+      ON duplicate_row.language = keep_row.language
+     AND duplicate_row.idiom = keep_row.idiom
+     AND duplicate_row.meaning = keep_row.meaning
+     AND duplicate_row.id > keep_row.id;
+
+    /* Add the unique index only when it is not already present. */
+    IF NOT EXISTS (
+        SELECT 1
+        FROM information_schema.STATISTICS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'idioms'
+          AND INDEX_NAME = 'uq_idioms_unique'
+    ) THEN
+        ALTER TABLE idioms
+            ADD CONSTRAINT uq_idioms_unique
+            UNIQUE (language, idiom, meaning);
+    END IF;
+END$$
+
+DELIMITER ;
+
+CALL migrate_idioms_table();
+DROP PROCEDURE migrate_idioms_table;
+
+INSERT INTO idioms (
+    language,
+    idiom,
+    meaning,
+    idiom_translation,
+    meaning_translation
+)
+VALUES
+('English','Close to your heart','If something is close to your heart, you care a lot about it.','n/a','n/a'),
 	 ('English','Heart of gold','Someone with a heart of gold is a genuinely kind and caring person.','n/a','n/a'),
 	 ('English','Heart is not in it','If your heart is not in something, then you do not really believe in it or support it.','n/a','n/a'),
 	 ('English','Heart in your mouth','If your heart is in your mouth, then you feel nervous or scared.','n/a','n/a'),
@@ -78,15 +143,7 @@ INSERT INTO idioms.idioms (language,idiom,meaning,idiom_translation,meaning_tran
 	 ('Ukrainian','Покласти руку на серце','Щиро, відверто.','To put your hand on your heart','To be honest and sincere.'),
 	 ('Swedish','Ha ett brustet hjärta','Vara mycket olycklig; ha ett krossat hjärta.','To have a broken heart.','To be very unhappy caused by the ending of a romantic relationship or the death of a loved one'),
 	 ('Arabic','البعيد عن العين بعيد عن القلب','When someone is absent for a long time, they are thought about less or missed less.','Out of sight, out of mind','Absence can weaken emotional attachment over time.'),
-	 ('Arabic','قلبٌ من حجر','يشير هذا التعبير إلى شخص قاسٍ أو غير متعاطف، لا تتأثر مشاعره بسهولة؛ وهو ينطوي على دلالة البرود العاطفي أو الجمود في السلوك','A heart of stone','This expression refers to a tough or unsympathetic person whose feelings are not easily affected. It implies emotional coldness or stiffness in behavior.'),
-
+	 ('Arabic','قلبٌ من حجر','يشير هذا التعبير إلى شخص قاسٍ أو غير متعاطف، لا تتأثر مشاعره بسهولة؛ وهو ينطوي على دلالة البرود العاطفي أو الجمود في السلوك','A heart of stone','This expression refers to a tough or unsympathetic person whose feelings are not easily affected. It implies emotional coldness or stiffness in behavior.')
 ON DUPLICATE KEY UPDATE
-idiom_translation = VALUES(idiom_translation),
-meaning_translation = VALUES(meaning_translation);
-
-
-ALTER TABLE idioms
-ADD CONSTRAINT uq_idioms_unique UNIQUE (language, idiom, meaning);
-
-ALTER TABLE idioms
-ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY FIRST;
+    idiom_translation = VALUES(idiom_translation),
+    meaning_translation = VALUES(meaning_translation);
